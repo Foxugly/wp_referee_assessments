@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+{{post}}
+{{question}}
+  <h4>{% trans "Match" %} [{{match.category.name}}] {{ match.datetime|date:"m/d/Y" }}  : {{match.teamH}} - {{match.teamA}}</h4>
+  <h5>{% trans "Referee(s)" %} :</h5>
+  <div class="row">
+  {% for e in evaluations %}
+  {% if nb_ref > 1 %}
+  <div class="col-sm-6">
+  {% else %}
+  <div class="col-sm-6">
+  {% endif %}
+  <div class="card">
+  <div class="card-header">{{ e.referee }}</div>
+    <div class="card-body">
+      <form action="/evaluation/{{id}}/" enctype="multipart/form-data" method="post" >
+        {% csrf_token %}
+        <input type=hidden name="eval_id" value="{{e.id}}" />
+        {% for q in e.questionnaire.all %}
+        <div class="row p-1">
+            <div class="col">{{q.question}}</div>
+            {% if q.question.type_question == "INT" %}    
+                <div class="col">
+                    <input id="{{q.reponse.name}}" name="question_{{q.id}}" type=number min="{{q.min_value}}" max="{{q.max_value}}" class="form-control text-center" value="{{q.answer}}" />
+                </div>
+            {% endif %}
+            {% if q.question.type_question == "BOOL" %}
+                <div class="col">
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        {% if q.answer == 1 %} 
+                        <label class="btn btn-secondary active">
+                            <input type="radio" name="question_{{q.id}}" id="question_{{q.id}}_yes" value="1" autocomplete="off" checked>{% trans "Yes" %}
+                        </label>
+                        <label class="btn btn-secondary">
+                            <input type="radio" name="question_{{q.id}}" id="question_{{q.id}}_no" value="0" autocomplete="off">{% trans "No" %}
+                        </label>
+                        {% endif %}
+                        {% if q.answer == 0 %} 
+                        <label class="btn btn-secondary">
+                            <input type="radio" name="question_{{q.id}}" id="question_{{q.id}}_yes" value="1" autocomplete="off">{% trans "Yes" %}
+                        </label>
+                        <label class="btn btn-secondary active">
+                            <input type="radio" name="question_{{q.id}}" id="question_{{q.id}}_no" value="0" autocomplete="off" checked>{% trans "No" %}
+                        </label>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+        </div> 
+        {% endfor %}
+        {% if e.confirm %}
+        <div class="row p-1">
+          <div class="col">
+            <div class="alert alert-success" role="alert">{% trans "Saved" %} {{e.datetime_confirm |date:"m/d/Y"}} {% trans "by" %} {{e.user}}.</div>
+          </div>
+        </div>
+        {% else %}
+        <div class="row">
+          <div style="float: none; margin: 0 auto;">
+            <input type="submit" class="btn btn-success btn-block p-2" value="Save" />
+          </div>
+        </div>
+        {% endif %}
+
+      </form>
+    </div>
+  </div>
+</div>
+  {% endfor %}
+</div>
+<script>
+$(document).on('click', '.number-spinner button', function () {    
+	var btn = $(this),
+		oldValue = btn.closest('.number-spinner').find('input').val().trim(),
+		newVal = 0;
+	
+	if (btn.attr('data-dir') == 'up') {
+		newVal = parseInt(oldValue) + 1;
+	} else {
+		if (oldValue > 1) {
+			newVal = parseInt(oldValue) - 1;
+		} else {
+			newVal = 1;
+		}
+	}
+	btn.closest('.number-spinner').find('input').val(newVal);
+});
+</script>
+{% endblock content %}

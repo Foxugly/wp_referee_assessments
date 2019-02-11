@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+<h1>CLUBS</h1>
+{% if teams %}
+{{teams}} {{categories}}
+  <h1>{% trans 'List of matchs' %}</h1>
+  <nav class="nav nav-tabs" style="margin-bottom: 20px;">
+    <a class="nav-item nav-link active" data-toggle="tab" href="#all">{% trans 'All' %} <span class="badge badge-secondary">{{n_all}}</span></a>
+    <a class="nav-item nav-link" data-toggle="tab" href="#todo">{% trans 'Todo' %} <span 
+    {% if n_todo > 0 %} 
+      class="badge badge-success"
+    {% else %}
+      class="badge badge-secondary"
+    {% endif %}
+    >{{n_todo}}</span></a>
+    <a class="nav-item nav-link" data-toggle="tab" href="#done">{% trans 'Done' %} <span class="badge badge-secondary">{{n_done}}</span></a>
+    <a class="nav-item nav-link" data-toggle="tab" href="#next">{% trans 'Incoming' %} <span class="badge badge-secondary">{{n_next}}</span></a>
+</nav>
+<div class="tab-content">
+      <div id="all" class="tab-pane active">
+        {% for m in all %}
+          {% if m.datetime|date:"Y-m-d" <= now|date:"Y-m-d"  %}
+            <p><a href='/evaluation/{{ m.id }}/'> [{{m.category.name}}] {{ m.datetime|date:"m/d/Y" }}  : {{m.teamH}} - {{m.teamA}}</a></p>
+          {% else %}
+            <p>[{{m.category.name}}] {{ m.datetime|date:"m/d/Y" }}  : {{m.teamH}} - {{m.teamA}}</p>
+          {% endif %}
+        {% endfor %}
+      </div>
+      <div id="todo" class="tab-pane fade">
+        {% for m in todo %}
+          <p><a href='/evaluation/{{ m.id }}/'> [{{m.category.name}}] {{ m.datetime|date:"m/d/Y" }}  : {{m.teamH}} - {{m.teamA}}</a></p>
+        {% endfor %}
+      </div>
+      <div id="done" class="tab-pane fade">
+        {% for m in done %}
+          <p><a href='/evaluation/{{ m.id }}/'> [{{m.category.name}}] {{ m.datetime|date:"m/d/Y" }}  : {{m.teamH}} - {{m.teamA}}</a></p>
+        {% endfor %}
+      </div>
+      <div id="next" class="tab-pane fade">
+        {% for m in next %}
+          <p>[{{m.category.name}}] {{ m.datetime|date:"m/d/Y" }}  : {{m.teamH}} - {{m.teamA}}</p>
+        {% endfor %}
+      </div>
+</div>
+{% else %}
+Aucune équipe associé à votre profil
+{% endif %}
+{% endblock content %}
