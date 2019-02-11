@@ -1,0 +1,6 @@
+Django>=2.0.2
+django-hijack
+django-hijack-admin
+django-extensions
+jupyter
+django-debug-toolbar
