@@ -1,11 +1,12 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from .decorators import user_can_access
+from .decorators import user_can_access, referee_admin_required
 from championship.models import Match, Referee
 from .models import Evaluation, Question, QuestionR
 
 # Create your views here.
 @login_required
+@referee_admin_required
 def stats(request):
     c = {}
     refs=[]

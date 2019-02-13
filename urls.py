@@ -15,16 +15,26 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from championship.views import home, init
+from championship.views import home
 from assessment.views import evaluation, stats
 from users.views import MyUpdateView
+from django.conf import settings
+from django.contrib.auth.decorators import login_required
+
 
 urlpatterns = [
     path('', home, name='home'),
     path('evaluation/<int:match_id>/', evaluation, name="evaluation"),
-    path('init/', init, name="init"),
     path('stats/', stats, name="stats"),
     path('admin/', admin.site.urls),
-    path('update/', MyUpdateView.as_view(), name="update"),
+    path('update/', login_required(MyUpdateView.as_view()), name="update"),
+    path('select2/', include('django_select2.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('hijack/', include('hijack.urls', namespace='hijack')),
 ]
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        path('__debug__/', include(debug_toolbar.urls)),
+    ] + urlpatterns

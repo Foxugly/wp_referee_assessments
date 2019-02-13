@@ -38,9 +38,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
+    'django_select2',
+    'bootstrap4',
     'users',
     'championship',
-    'assessment'
+    'assessment',
+    'debug_toolbar',
+    'hijack',
+    'compat',
+    'hijack_admin',
 ]
 
 MIDDLEWARE = [
@@ -51,6 +58,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'urls'
@@ -109,9 +117,29 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+# ACTIVE TO PROD / COMMENT TO TEST
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# COMMENT TO PROD / ACTIVE TO TEST
+#STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
+
 AUTH_USER_MODEL = "users.MyUser" 
 LANGUAGES = (
     ('en-us', _("English")),
     ('fr-be', _("Français")),
     ('nl-be', _("Nederlands")),
 )
+
+HIJACK_LOGIN_REDIRECT_URL = '/'
+HIJACK_LOGOUT_REDIRECT_URL = '/'
+HIJACK_DISPLAY_WARNINGS = True
+HIJACK_USE_BOOTSTRAP = True
+HIJACK_ALLOW_GET_REQUESTS = True
+HIJACK_REGISTER_ADMIN = False
+
+if DEBUG:
+    def show_toolbar(request):
+        return True
+
+    DEBUG_TOOLBAR_CONFIG = {
+        'SHOW_TOOLBAR_CALLBACK': 'settings.show_toolbar',
+    }

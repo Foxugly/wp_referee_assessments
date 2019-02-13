@@ -1,16 +1,21 @@
 from django.shortcuts import render
 from users.models import MyUser
 from django.views.generic import UpdateView
-
-
+from django.contrib.messages.views import SuccessMessageMixin
+from .forms import MyUserForm
+from django.utils.translation import gettext_lazy as _
 # Create your views here.
 
 
-class MyUpdateView(UpdateView):
+class MyUpdateView(SuccessMessageMixin, UpdateView):
 	model = MyUser
-	fields = ['username', 'first_name', 'last_name', 'email', 'language']
 	template_name = 'registration/profile.html'
-	success_url = '/'
+	form_class = MyUserForm
+	success_url = '/update/'
+	success_message = _('Changes saved.')
+
+	def form_valid(self, form):
+		return super().form_valid(form)
 
 	def get_object(self):
 		return self.request.user

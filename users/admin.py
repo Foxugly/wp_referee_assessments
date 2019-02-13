@@ -5,12 +5,13 @@ from django.contrib.auth.models import Group
 from .models import MyUser
 from .forms import MyUserChangeForm, MyUserCreationForm
 from django.utils.translation import gettext, gettext_lazy as _
+from hijack_admin.admin import HijackUserAdminMixin
 
 
-class MyUserAdmin(UserAdmin):
+class MyUserAdmin(UserAdmin, HijackUserAdminMixin):
 	form = MyUserChangeForm
 	add_form = MyUserCreationForm
-	list_display = ('username', 'email', 'first_name', 'last_name', 'is_referee_admin')
+	list_display = ('username', 'email', 'first_name', 'last_name', 'is_referee_admin', 'hijack_field',)
 	list_filter = ('is_staff', 'is_superuser', 'is_active', 'is_referee_admin')
 	fieldsets = (
 		(None, {'fields': ('username', 'password')}),

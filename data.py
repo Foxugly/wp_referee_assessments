@@ -72,3 +72,6 @@ u1.last_name = "test"
 u1.teams.add(t1)
 u1.categories.add(c2)
 u1.save()
+u3 = MyUser(username="refref", email='test3@test3.be', first_name='ref', last_name='FRBN',is_referee_admin=True)
+u3.set_password("refref")
+u3.save()
