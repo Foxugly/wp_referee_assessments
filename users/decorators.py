@@ -1,5 +1,5 @@
 from django.core.exceptions import PermissionDenied
-from .models import Match
+from assessment.models import Match
 
 
 def user_can_access(function):

@@ -15,19 +15,21 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from championship.views import home
-from assessment.views import evaluation, stats
-from users.views import MyUpdateView
+from users.views import CustomUserUpdateView, home, evaluation, stats
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 
 
 urlpatterns = [
-    path('', home, name='home'),
-    path('evaluation/<int:match_id>/', evaluation, name="evaluation"),
-    path('stats/', stats, name="stats"),
+    path('',login_required(home), name='home'),
+    path('evaluation/<int:match_id>/',login_required(evaluation), name="evaluation"),
+    path('stats/',login_required(stats), name="stats"),
     path('admin/', admin.site.urls),
-    path('update/', login_required(MyUpdateView.as_view()), name="update"),
+    path('championship/', include('championship.urls', namespace='championship')),
+    path('assessment/', include('assessment.urls', namespace='assessment')),
+    path('update/', login_required(CustomUserUpdateView.as_view()), name="update"),
+
+    path('i18n/', include('django.conf.urls.i18n')),
     path('select2/', include('django_select2.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('hijack/', include('hijack.urls', namespace='hijack')),

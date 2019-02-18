@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load bootstrap4 static i18n hijack_tags common_tags %}
+{% block content %}
+<div class="text-center"><h1>{{model|verbose_name }}</h1></div>
+<div class="text-right"><a href="{{ model.add_url }}" class="btn btn-primary"><span class="fa fa-plus"></span> {% trans 'Add' %}</a></div>
+<table class="table table-striped">
+<thead>
+    <tr>Name</tr>
+ </thead>
+ <tbody>
+{% for obj in object_list %}
+    <tr><td><a href="{{obj.get_absolute_url}}">{{ obj.name }}</a></td></tr>
+{% empty %}
+    <tr><td>No objects yet.</td></tr>
+{% endfor %}
+</tbody>
+</table>
+{% endblock content %}

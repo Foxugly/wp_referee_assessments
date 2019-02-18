@@ -1,5 +1,5 @@
-{% load i18n staticfiles hijack_tags bootstrap4 %}
-<!doctype html>
+{% load i18n static hijack_tags bootstrap4 common_tags django_bootstrap_breadcrumbs %}
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -10,27 +10,14 @@
     <title>WP Referees Assessement</title>
 
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css">
+    {% bootstrap_css %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'select2/css/bootstrap-select.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'hijack/hijack-styles.css' %}" />
-
-    {{ form.media.css }}
-
-    
+   
     <style>
     body {
       padding-top: 4.5rem;
-    }
-
-    .navbar-collapse.collapse.in {
-      display: block!important;
-    }
-    .progress {
-      margin-bottom: 0 !important;
-    }
-    table {
-      table-layout: fixed;
     }
     </style>
   </head>
@@ -55,9 +42,20 @@
           {% endif %}
         </ul>
         <ul class="navbar-nav navbar-right">
-          <!--<li class="nav-item">
-            <a class="nav-link" href="#">Help</a>
-          </li>-->
+          <li>
+            <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+              <form name="ui" action="{% url 'set_language' %}" method="post">{% csrf_token %}
+              <input name="language" type="hidden"/>
+              {% get_current_language as LANGUAGE_CODE %}
+              {% get_available_languages as LANGUAGES %}
+              {% get_language_info_list for LANGUAGES as languages %}
+              <div class="btn-group mr-2" role="group">
+              {% for language in languages %}
+                  <a class="btn btn-secondary {% if language.code == LANGUAGE_CODE %}active{% endif %}" href="#" onclick="document.ui.language.value='{{ language.code}}'; document.ui.submit();">{{ language.code| upper }}</a>                     
+              {% endfor %}
+              </div>
+            </div>
+          </li>
           {% if user.is_authenticated %}
           <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -75,25 +73,16 @@
       </div>
     </nav>
     {% hijack_notification %}
-    <main role="main" class="container">
-      {% block content %} {% endblock %}
-    </main>
-
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>    
-    <!-- select2 -->
-    {{ form.media.js }}
-    <!-- select2-bootstrap4-theme -->
-    <script>$(function () {
-  $('select').each(function () {
-    $(this).select2({
-      theme: 'bootstrap4',
-      width: '100%',
-      placeholder: $(this).attr('placeholder'),
-      allowClear: Boolean($(this).data('allow-clear')),
-    });
-  });
-});</script>
+    <div class="container">
+      {% block breadcrumbs %}
+          {% render_breadcrumbs %}
+      {% endblock %}
+      {% block content %}{% endblock content %}
+    </div>
+    {% bootstrap_javascript jquery='full' %}
+    <script type="text/javascript" src="{% static 'select2/js/bootstrap-select.js' %}"></script>
+    <script>
+      $(document).ready(function(){$('select').selectpicker();});
+    </script>
   </body>
 </html>

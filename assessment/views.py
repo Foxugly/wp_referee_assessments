@@ -1,60 +1,129 @@
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
-from .decorators import user_can_access, referee_admin_required
-from championship.models import Match, Referee
-from .models import Evaluation, Question, QuestionR
-
+from view_breadcrumbs import ListBreadcrumbMixin, UpdateBreadcrumbMixin, DetailBreadcrumbMixin, CreateBreadcrumbMixin
+from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.list import ListView
+from django.views.generic.detail import DetailView
+from assessment.models import Question, QuestionR, Assessment
+from django.urls import reverse_lazy
 # Create your views here.
-@login_required
-@referee_admin_required
-def stats(request):
-    c = {}
-    refs=[]
-    q = Question.objects.all().order_by('id')
-    c['questions'] = Question.objects.all().order_by('id')
-    for r in Referee.objects.all():
-        d = {}
-        d['name'] = r.get_full_name()
-        eval_r = Evaluation.objects.filter(referee=r, confirm=True)
-        d['matches'] = len(eval_r)
-        notes = []
-        values = {}
-        n = 0
-        for e in eval_r:
-            n+=1
-            for qr in e.get_sorted_questions():
-                if qr.question.id not in values :
-                    values[qr.question.id] = qr.answer
-                else:
-                    values[qr.question.id] += qr.answer
-        for q in c['questions']:
-            notes.append(0 if not n else int((values[q.id]/n)*10))
-            d['notes'] = notes
-        refs.append(d)
-    c['refs'] = refs
-    return render(request, 'stats.html', c)
+#--------------------------- SEASON -------------------------------
 
-@login_required
-@user_can_access
-def evaluation(request, match_id):
-    c = {}
-    c['id']= match_id
-    if request.method == 'POST':
-        d = dict(request.POST)
-        for key in d.keys():
-            if "question" in key :
-                q_id = key.split("question_")[1]
-                qr = QuestionR.objects.get(id=q_id)
-                answer = int(d[key][0]) if type(d[key]) == list else  int(d[key])
-                qr.answer = answer
-                qr.save()
-        eid = int(d['eval_id'][0])
-        e = Evaluation.objects.get(id=eid)
-        e.confirm = True
-        e.user = request.user
-        e.datetime_confirm = datetime.now()
-        e.save()
-    c['match'] = Match.objects.get(id=match_id)
-    c['evaluations'] = Evaluation.objects.filter(match=c['match'])
-    c['nb_ref'] = len(c['evaluations'])
-    return render(request, 'evaluation.html', c)
+class QuestionCreateView(CreateBreadcrumbMixin, CreateView):
+    model = Question
+    fields = ['name', 'priority', 'active', 'type_question', 'min_value', 'max_value', 'default_value']
+    template_name = 'update.html'
+    success_url = reverse_lazy('assesment:question_list')
+
+
+class QuestionListView(ListBreadcrumbMixin, ListView):
+    model = Question
+    paginate_by = 20
+    ordering = ['pk']
+    template_name = 'list.html'
+    success_url = reverse_lazy('assesment:question_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['model']= self.model
+        return context
+
+
+class QuestionUpdateView(UpdateBreadcrumbMixin, UpdateView):
+    model = Question
+    fields = ['name', 'priority', 'active', 'type_question', 'min_value', 'max_value', 'default_value']
+    template_name = 'update.html'
+    success_url = reverse_lazy('assesment:question_list')
+
+    def get_object(self):
+        return Question.objects.get(pk=self.kwargs['pk'])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['model']= self.model
+        return context
+
+
+class QuestionDetailView(DetailBreadcrumbMixin, DetailView):
+    model = Question
+
+#--------------------------- QUESTIONR -------------------------------
+
+class QuestionRCreateView(CreateBreadcrumbMixin, CreateView):
+    model = QuestionR
+    fields = ['question', 'priority', 'active', 'answer']
+    template_name = 'update.html'
+    success_url = reverse_lazy('assesment:questionr_list')
+
+
+class QuestionRListView(ListBreadcrumbMixin, ListView):
+    model = QuestionR
+    paginate_by = 20
+    ordering = ['pk']
+    template_name = 'list.html'
+    success_url = reverse_lazy('assesment:questionr_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['model']= self.model
+        return context
+
+
+class QuestionRUpdateView(UpdateBreadcrumbMixin, UpdateView):
+    model = QuestionR
+    fields = ['question', 'priority', 'active', 'answer']
+    template_name = 'update.html'
+    success_url = reverse_lazy('assesment:questionr_list')
+
+    def get_object(self):
+        return QuestionR.objects.get(pk=self.kwargs['pk'])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['model']= self.model
+        return context
+
+
+class QuestionRDetailView(DetailBreadcrumbMixin, DetailView):
+    model = QuestionR
+
+#--------------------------- ASSESSMENT -------------------------------
+
+class AssessmentCreateView(CreateBreadcrumbMixin, CreateView):
+    model = Assessment
+    fields = ['match', 'referee', 'user', 'team', 'questionnaire', 'confirm', 'datetime_confirm']
+    template_name = 'update.html'
+    success_url = reverse_lazy('assessment:assessment_list')
+
+
+class AssessmentListView(ListBreadcrumbMixin, ListView):
+    model = Assessment
+    paginate_by = 20
+    ordering = ['pk']
+    template_name = 'list.html'
+    success_url = reverse_lazy('assessment:assessment_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['model']= self.model
+        return context
+
+
+class AssessmentUpdateView(UpdateBreadcrumbMixin, UpdateView):
+    model = Assessment
+    fields = ['match', 'referee', 'user', 'team', 'questionnaire', 'confirm', 'datetime_confirm']
+    template_name = 'update.html'
+    success_url = reverse_lazy('assessment:assessment_list')
+
+    def get_object(self):
+        return Assessment.objects.get(pk=self.kwargs['pk'])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['model']= self.model
+        return context
+
+
+class AssessmentDetailView(DetailBreadcrumbMixin, DetailView):
+    model = Assessment
+
+
+

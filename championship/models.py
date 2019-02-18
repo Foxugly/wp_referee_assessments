@@ -2,6 +2,15 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
+
+class Season(models.Model):
+    name = models.CharField(_('name'), max_length=100)
+    active = models.BooleanField(_('active'), default=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Team(models.Model):
     name = models.CharField(_('name'), max_length=100)
     active = models.BooleanField(_('active'), default=True)
@@ -9,12 +18,22 @@ class Team(models.Model):
     def __str__(self):
         return self.name
 
+
 class Category(models.Model):
     name = models.CharField(_('name of category'), max_length=20)
-    teams = models.ManyToManyField(Team, blank=True, verbose_name=_('teams'))
 
     def __str__(self):
         return self.name
+
+
+class Competition(models.Model):
+    season = models.ForeignKey(Season, on_delete=models.CASCADE, verbose_name=_('season'))
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name=_('category'))
+    teams = models.ManyToManyField(Team, blank=True, verbose_name=_('teams'))
+
+    def __str__(self):
+        return "%s - %s" % (self.season, self.category)
+
 
 class Referee(models.Model):
     first_name = models.CharField(_('first name'), max_length=30, blank=True)
@@ -31,7 +50,7 @@ class Referee(models.Model):
 
 class Match(models.Model):
     datetime = models.DateTimeField(_('datetime of the match'))
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name=_('category'))
+    competition = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name=_('competition'))
     teamH = models.ForeignKey(Team, related_name="teamH", on_delete=models.CASCADE, verbose_name=_('team Home'))
     teamA = models.ForeignKey(Team, related_name="teamA",on_delete=models.CASCADE, verbose_name=_('team Away'))
     teams = models.ManyToManyField(Team, related_name="teams", blank=True, verbose_name=_('teams'))
@@ -50,4 +69,4 @@ class Match(models.Model):
         return self.referees.all()
     
     def __str__(self):
-        return '[%s] %s : %s' % (self.category, self.datetime, list(self.get_teams_s()))
+        return '[%s] %s : %s - %s' % (self.competition, self.datetime, self.teamH, self.teamA)

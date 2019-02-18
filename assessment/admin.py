@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Question, QuestionR, Evaluation
+from assessment.models import Question, QuestionR, Assessment
 
 # Register your models here.
 class QuestionAdmin(admin.ModelAdmin):
@@ -8,10 +8,10 @@ class QuestionAdmin(admin.ModelAdmin):
 class QuestionRAdmin(admin.ModelAdmin):
     pass
 
-class EvaluationAdmin(admin.ModelAdmin):
+class AssessmentAdmin(admin.ModelAdmin):
     pass
 
 
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(QuestionR, QuestionRAdmin)
-admin.site.register(Evaluation, EvaluationAdmin)
+admin.site.register(Assessment, AssessmentAdmin)

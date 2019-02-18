@@ -2,15 +2,15 @@ from django import forms
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import Group
-from .models import MyUser
-from .forms import MyUserChangeForm, MyUserCreationForm
+from users.models import CustomUser
+from users.forms import CustomUserChangeForm, CustomUserCreationForm
 from django.utils.translation import gettext, gettext_lazy as _
 from hijack_admin.admin import HijackUserAdminMixin
 
 
-class MyUserAdmin(UserAdmin, HijackUserAdminMixin):
-	form = MyUserChangeForm
-	add_form = MyUserCreationForm
+class CustomUserAdmin(UserAdmin, HijackUserAdminMixin):
+	form = CustomUserChangeForm
+	add_form = CustomUserCreationForm
 	list_display = ('username', 'email', 'first_name', 'last_name', 'is_referee_admin', 'hijack_field',)
 	list_filter = ('is_staff', 'is_superuser', 'is_active', 'is_referee_admin')
 	fieldsets = (
@@ -30,5 +30,5 @@ class MyUserAdmin(UserAdmin, HijackUserAdminMixin):
 	filter_horizontal = ('teams', 'categories',)
 
 
-admin.site.register(MyUser, MyUserAdmin)
+admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.unregister(Group)

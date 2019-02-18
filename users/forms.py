@@ -1,26 +1,26 @@
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.forms import ModelForm
 from django.forms.models import ModelMultipleChoiceField
-from .models import MyUser
+from users.models import CustomUser
 from championship.models import Team, Category
 from django_select2.forms import Select2MultipleWidget
 
 
-class MyUserCreationForm(UserCreationForm):
+class CustomUserCreationForm(UserCreationForm):
 	class Meta:
-		model = MyUser
+		model = CustomUser
 		fields = ("username",)
 
 
-class MyUserChangeForm(UserChangeForm):
+class CustomUserChangeForm(UserChangeForm):
 	class Meta:
-		model = MyUser
+		model = CustomUser
 		fields = '__all__'
 
 
-class MyUserForm(ModelForm):
+class CustomUserForm(ModelForm):
 	def __init__(self, *args, **kwargs):
-		super(MyUserForm, self).__init__(*args, **kwargs)
+		super(CustomUserForm, self).__init__(*args, **kwargs)
 		instance = getattr(self, 'instance', None)
 		if instance and instance.pk:
 			self.fields['is_referee_admin'].widget.attrs['readonly'] = True
@@ -36,7 +36,7 @@ class MyUserForm(ModelForm):
 
 
 	class Meta:
-		model = MyUser
+		model = CustomUser
 		fields = ['username', 'first_name', 'last_name', 'email', 'language', 'is_referee_admin', 'is_superuser', 'categories', 'teams']
 
 	teams = ModelMultipleChoiceField(queryset=Team.objects.all(), widget=Select2MultipleWidget)

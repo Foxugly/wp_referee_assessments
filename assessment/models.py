@@ -1,5 +1,5 @@
 from django.db import models
-from users.models import MyUser
+from users.models import CustomUser
 from django.utils.translation import gettext_lazy as _
 from championship.models import Match, Referee, Team, Category
 
@@ -37,6 +37,7 @@ class Question(models.Model):
 class QuestionR(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE, verbose_name=_('question'))
     priority = models.IntegerField(_('priority'))
+    active = models.BooleanField(_('active'), default=True)
     answer = models.IntegerField(_('answer'), default=0)
 
     def __str__(self):
@@ -48,10 +49,10 @@ class QuestionR(models.Model):
                 raise ValidationError(_('Answer is not in the limited range.'))
 
 
-class Evaluation(models.Model):
+class Assessment(models.Model):
     match = models.ForeignKey(Match, on_delete=models.CASCADE, verbose_name=_('match'))
     referee = models.ForeignKey(Referee, on_delete=models.CASCADE, verbose_name=_('referee'))
-    user = models.ForeignKey(MyUser, on_delete=models.CASCADE, verbose_name=_('user'))
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name=_('user'))
     team = models.ForeignKey(Team, on_delete=models.CASCADE, verbose_name=_('team'))
     questionnaire = models.ManyToManyField(QuestionR, blank=True, verbose_name=_('type of question'))
     confirm = models.BooleanField(_('confirmation'), default=False)
