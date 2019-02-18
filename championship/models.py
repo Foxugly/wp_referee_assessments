@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
+from django.urls import reverse
 
 
 class Season(models.Model):
@@ -10,6 +10,18 @@ class Season(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('championship:season_change', kwargs={'pk': self.pk})
+
+    def add_url(self):
+        return  reverse('championship:season_add')
+
+    def url(self):
+        return reverse('championship:season_list')
+
+    class Meta:
+        verbose_name = _('Season')
+
 
 class Team(models.Model):
     name = models.CharField(_('name'), max_length=100)
@@ -18,12 +30,36 @@ class Team(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('championship:team_change', kwargs={'pk': self.pk})
+
+    def add_url(self):
+        return  reverse('championship:team_add')
+
+    def url(self):
+        return reverse('championship:team_list')
+
+    class Meta:
+        verbose_name = _('Team')
+
 
 class Category(models.Model):
     name = models.CharField(_('name of category'), max_length=20)
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('championship:category_change', kwargs={'pk': self.pk})
+
+    def add_url(self):
+        return  reverse('championship:category_add')
+
+    def url(self):
+        return reverse('championship:category_list')
+
+    class Meta:
+        verbose_name = _('Category')
 
 
 class Competition(models.Model):
@@ -33,6 +69,18 @@ class Competition(models.Model):
 
     def __str__(self):
         return "%s - %s" % (self.season, self.category)
+
+    def get_absolute_url(self):
+        return reverse('championship:competition_change', kwargs={'pk': self.pk})
+
+    def add_url(self):
+        return  reverse('championship:competition_add')
+
+    def url(self):
+        return reverse('championship:competition_list')
+
+    class Meta:
+        verbose_name = _('Competition')
 
 
 class Referee(models.Model):
@@ -46,6 +94,18 @@ class Referee(models.Model):
     def get_full_name(self):
         full_name = '%s %s' % (self.first_name, self.last_name)
         return full_name.strip()
+
+    def get_absolute_url(self):
+        return reverse('championship:referee_change', kwargs={'pk': self.pk})
+
+    def add_url(self):
+        return  reverse('championship:referee_add')
+
+    def url(self):
+        return reverse('championship:referee_list')
+
+    class Meta:
+        verbose_name = _('Referee')
 
 
 class Match(models.Model):
@@ -70,3 +130,15 @@ class Match(models.Model):
     
     def __str__(self):
         return '[%s] %s : %s - %s' % (self.competition, self.datetime, self.teamH, self.teamA)
+
+    def get_absolute_url(self):
+        return reverse('championship:match_change', kwargs={'pk': self.pk})
+
+    def add_url(self):
+        return  reverse('championship:match_add')
+
+    def url(self):
+        return reverse('championship:match_list')
+
+    class Meta:
+        verbose_name = _('Match')

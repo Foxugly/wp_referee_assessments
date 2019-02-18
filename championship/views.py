@@ -2,7 +2,7 @@ from championship.models import Season, Match, Team, Category, Referee, Competit
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from view_breadcrumbs import ListBreadcrumbMixin, UpdateBreadcrumbMixin, DetailBreadcrumbMixin, CreateBreadcrumbMixin
 
 
@@ -10,7 +10,7 @@ from view_breadcrumbs import ListBreadcrumbMixin, UpdateBreadcrumbMixin, DetailB
 
 class SeasonCreateView(CreateBreadcrumbMixin, CreateView):
     model = Season
-    fields = '__all__'
+    fields = ['name', 'active']
     template_name = 'update.html'
     success_url = reverse_lazy('championship:season_list')
 

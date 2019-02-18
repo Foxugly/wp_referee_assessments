@@ -2,6 +2,7 @@ from django.db import models
 from users.models import CustomUser
 from django.utils.translation import gettext_lazy as _
 from championship.models import Match, Referee, Team, Category
+from django.urls import reverse
 
 
 # Create your models here.
@@ -33,6 +34,18 @@ class Question(models.Model):
                 self.default_value = 0
         super().save(*args, **kwargs)
 
+    def get_absolute_url(self):
+        return reverse('assessment:question_change', kwargs={'pk': self.pk})
+
+    def add_url(self):
+        return  reverse('assessment:question_add')
+
+    def url(self):
+        return reverse('assessment:question_list')
+
+    class Meta:
+        verbose_name = _('Question')
+
 
 class QuestionR(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE, verbose_name=_('question'))
@@ -47,6 +60,18 @@ class QuestionR(models.Model):
         if self.question.type_question in ('INT', 'BOOL'):
             if not self.question.min_value <= int(self.answer) <= self.question.max_value+1:
                 raise ValidationError(_('Answer is not in the limited range.'))
+
+    def get_absolute_url(self):
+        return reverse('assessment:questionr_change', kwargs={'pk': self.pk})
+
+    def add_url(self):
+        return  reverse('assessment:questionr_add')
+
+    def url(self):
+        return reverse('assessment:questionr_list')
+
+    class Meta:
+        verbose_name = _('QuestionR')
 
 
 class Assessment(models.Model):
@@ -63,3 +88,15 @@ class Assessment(models.Model):
 
     def __str__(self):
         return "%s - %s " % (self.match, self.referee)
+
+    def get_absolute_url(self):
+        return reverse('assessment:assessment_change', kwargs={'pk': self.pk})
+
+    def add_url(self):
+        return  reverse('assessment:assessment_add')
+
+    def url(self):
+        return reverse('assessment:assessment_list')
+
+    class Meta:
+        verbose_name = _('Assessment')
