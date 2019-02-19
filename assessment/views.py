@@ -11,7 +11,7 @@ class QuestionCreateView(CreateBreadcrumbMixin, CreateView):
     model = Question
     fields = ['name', 'priority', 'active', 'type_question', 'min_value', 'max_value', 'default_value']
     template_name = 'update.html'
-    success_url = reverse_lazy('assesment:question_list')
+    success_url = reverse_lazy('assessment:question_list')
 
 
 class QuestionListView(ListBreadcrumbMixin, ListView):
@@ -59,7 +59,7 @@ class QuestionRListView(ListBreadcrumbMixin, ListView):
     paginate_by = 20
     ordering = ['pk']
     template_name = 'list.html'
-    success_url = reverse_lazy('assesment:questionr_list')
+    success_url = reverse_lazy('assessment:questionr_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
