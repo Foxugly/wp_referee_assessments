@@ -13,10 +13,16 @@ class Season(models.Model):
     def get_absolute_url(self):
         return reverse('championship:season_change', kwargs={'pk': self.pk})
 
-    def add_url(self):
+    def get_add_url(self):
         return  reverse('championship:season_add')
 
-    def url(self):
+    def get_detail_url(self):
+        return reverse('championship:season_detail', kwargs={'pk': self.pk})
+
+    def get_delete_url(self):
+        return reverse('championship:season_delete', kwargs={'pk': self.pk})
+
+    def get_list_url(self):
         return reverse('championship:season_list')
 
     class Meta:
@@ -33,10 +39,16 @@ class Team(models.Model):
     def get_absolute_url(self):
         return reverse('championship:team_change', kwargs={'pk': self.pk})
 
-    def add_url(self):
+    def get_add_url(self):
         return  reverse('championship:team_add')
 
-    def url(self):
+    def get_detail_url(self):
+        return reverse('championship:team_detail', kwargs={'pk': self.pk})
+
+    def get_delete_url(self):
+        return reverse('championship:team_delete', kwargs={'pk': self.pk})
+
+    def get_list_url(self):
         return reverse('championship:team_list')
 
     class Meta:
@@ -52,10 +64,16 @@ class Category(models.Model):
     def get_absolute_url(self):
         return reverse('championship:category_change', kwargs={'pk': self.pk})
 
-    def add_url(self):
+    def get_add_url(self):
         return  reverse('championship:category_add')
 
-    def url(self):
+    def get_detail_url(self):
+        return reverse('championship:category_detail', kwargs={'pk': self.pk})
+
+    def get_delete_url(self):
+        return reverse('championship:category_delete', kwargs={'pk': self.pk})
+
+    def get_list_url(self):
         return reverse('championship:category_list')
 
     class Meta:
@@ -73,10 +91,16 @@ class Competition(models.Model):
     def get_absolute_url(self):
         return reverse('championship:competition_change', kwargs={'pk': self.pk})
 
-    def add_url(self):
+    def get_add_url(self):
         return  reverse('championship:competition_add')
 
-    def url(self):
+    def get_detail_url(self):
+        return reverse('championship:competition_detail', kwargs={'pk': self.pk})
+
+    def get_delete_url(self):
+        return reverse('championship:competition_delete', kwargs={'pk': self.pk})
+
+    def get_list_url(self):
         return reverse('championship:competition_list')
 
     class Meta:
@@ -98,10 +122,16 @@ class Referee(models.Model):
     def get_absolute_url(self):
         return reverse('championship:referee_change', kwargs={'pk': self.pk})
 
-    def add_url(self):
+    def get_add_url(self):
         return  reverse('championship:referee_add')
 
-    def url(self):
+    def get_detail_url(self):
+        return reverse('championship:referee_detail', kwargs={'pk': self.pk})
+
+    def get_delete_url(self):
+        return reverse('championship:referee_delete', kwargs={'pk': self.pk})
+
+    def get_list_url(self):
         return reverse('championship:referee_list')
 
     class Meta:
@@ -134,10 +164,16 @@ class Match(models.Model):
     def get_absolute_url(self):
         return reverse('championship:match_change', kwargs={'pk': self.pk})
 
-    def add_url(self):
+    def get_add_url(self):
         return  reverse('championship:match_add')
 
-    def url(self):
+    def get_detail_url(self):
+        return reverse('championship:match_detail', kwargs={'pk': self.pk})
+
+    def get_delete_url(self):
+        return reverse('championship:match_delete', kwargs={'pk': self.pk})
+
+    def get_list_url(self):
         return reverse('championship:match_list')
 
     class Meta:

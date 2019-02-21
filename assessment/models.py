@@ -1,5 +1,5 @@
 from django.db import models
-from users.models import CustomUser
+from customuser.models import CustomUser
 from django.utils.translation import gettext_lazy as _
 from championship.models import Match, Referee, Team, Category
 from django.urls import reverse
@@ -37,10 +37,16 @@ class Question(models.Model):
     def get_absolute_url(self):
         return reverse('assessment:question_change', kwargs={'pk': self.pk})
 
-    def add_url(self):
+    def get_add_url(self):
         return  reverse('assessment:question_add')
 
-    def url(self):
+    def get_detail_url(self):
+        return reverse('assessment:question_detail', kwargs={'pk': self.pk})
+
+    def get_delete_url(self):
+        return reverse('assessment:question_delete', kwargs={'pk': self.pk})
+
+    def get_list_url(self):
         return reverse('assessment:question_list')
 
     class Meta:
@@ -64,10 +70,16 @@ class QuestionR(models.Model):
     def get_absolute_url(self):
         return reverse('assessment:questionr_change', kwargs={'pk': self.pk})
 
-    def add_url(self):
+    def get_add_url(self):
         return  reverse('assessment:questionr_add')
 
-    def url(self):
+    def get_detail_url(self):
+        return reverse('assessment:questionr_detail', kwargs={'pk': self.pk})
+
+    def get_delete_url(self):
+        return reverse('assessment:questionr_delete', kwargs={'pk': self.pk})
+
+    def get_list_url(self):
         return reverse('assessment:questionr_list')
 
     class Meta:
@@ -92,10 +104,16 @@ class Assessment(models.Model):
     def get_absolute_url(self):
         return reverse('assessment:assessment_change', kwargs={'pk': self.pk})
 
-    def add_url(self):
+    def get_add_url(self):
         return  reverse('assessment:assessment_add')
 
-    def url(self):
+    def get_detail_url(self):
+        return reverse('assessment:assessment_detail', kwargs={'pk': self.pk})
+
+    def get_delete_url(self):
+        return reverse('assessment:assessment_delete', kwargs={'pk': self.pk})
+
+    def get_list_url(self):
         return reverse('assessment:assessment_list')
 
     class Meta:

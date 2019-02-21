@@ -9,9 +9,10 @@ from django.urls import reverse_lazy
 
 class QuestionCreateView(CreateBreadcrumbMixin, CreateView):
     model = Question
-    fields = ['name', 'priority', 'active', 'type_question', 'min_value', 'max_value', 'default_value']
+    fields = "__all__"
     template_name = 'update.html'
     success_url = reverse_lazy('assessment:question_list')
+    success_message = _('object created.')
 
 
 class QuestionListView(ListBreadcrumbMixin, ListView):
@@ -19,7 +20,7 @@ class QuestionListView(ListBreadcrumbMixin, ListView):
     paginate_by = 20
     ordering = ['pk']
     template_name = 'list.html'
-    success_url = reverse_lazy('assessment:question_list')
+    #success_url = reverse_lazy('assessment:question_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -29,9 +30,10 @@ class QuestionListView(ListBreadcrumbMixin, ListView):
 
 class QuestionUpdateView(UpdateBreadcrumbMixin, UpdateView):
     model = Question
-    fields = ['name', 'priority', 'active', 'type_question', 'min_value', 'max_value', 'default_value']
+    fields = "__all__"
     template_name = 'update.html'
     success_url = reverse_lazy('assessment:question_list')
+    success_message = _('object updated.')
 
     def get_object(self):
         return Question.objects.get(pk=self.kwargs['pk'])
@@ -44,14 +46,27 @@ class QuestionUpdateView(UpdateBreadcrumbMixin, UpdateView):
 
 class QuestionDetailView(DetailBreadcrumbMixin, DetailView):
     model = Question
+    template_name = 'detail.html'
+
+
+class QuestionDeleteView(SuccessMessageMixin, DeleteView):
+    model = Question
+    success_message = _('object deleted.')
+
+    def get(self, *args, **kwargs):
+        return self.post(*args, **kwargs)
+
+    def get_success_url(self):
+        return reverse_lazy('assessment:question_list')
 
 #--------------------------- QUESTIONR -------------------------------
 
 class QuestionRCreateView(CreateBreadcrumbMixin, CreateView):
     model = QuestionR
-    fields = ['question', 'priority', 'active', 'answer']
+    fields = "__all__"
     template_name = 'update.html'
     success_url = reverse_lazy('assessment:questionr_list')
+    success_message = _('object created.')
 
 
 class QuestionRListView(ListBreadcrumbMixin, ListView):
@@ -59,7 +74,7 @@ class QuestionRListView(ListBreadcrumbMixin, ListView):
     paginate_by = 20
     ordering = ['pk']
     template_name = 'list.html'
-    success_url = reverse_lazy('assessment:questionr_list')
+    #success_url = reverse_lazy('assessment:questionr_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -69,9 +84,10 @@ class QuestionRListView(ListBreadcrumbMixin, ListView):
 
 class QuestionRUpdateView(UpdateBreadcrumbMixin, UpdateView):
     model = QuestionR
-    fields = ['question', 'priority', 'active', 'answer']
+    fields = "__all__"
     template_name = 'update.html'
     success_url = reverse_lazy('assessment:questionr_list')
+    success_message = _('object updated.')
 
     def get_object(self):
         return QuestionR.objects.get(pk=self.kwargs['pk'])
@@ -84,14 +100,27 @@ class QuestionRUpdateView(UpdateBreadcrumbMixin, UpdateView):
 
 class QuestionRDetailView(DetailBreadcrumbMixin, DetailView):
     model = QuestionR
+    template_name = 'detail.html'
+
+
+class QuestionRDeleteView(SuccessMessageMixin, DeleteView):
+    model = QuestionR
+    success_message = _('object deleted.')
+
+    def get(self, *args, **kwargs):
+        return self.post(*args, **kwargs)
+
+    def get_success_url(self):
+        return reverse_lazy('assessment:questionr_list')
 
 #--------------------------- ASSESSMENT -------------------------------
 
 class AssessmentCreateView(CreateBreadcrumbMixin, CreateView):
     model = Assessment
-    fields = ['match', 'referee', 'user', 'team', 'questionnaire', 'confirm', 'datetime_confirm']
+    fields = "__all__"
     template_name = 'update.html'
     success_url = reverse_lazy('assessment:assessment_list')
+    success_message = _('object created.')
 
 
 class AssessmentListView(ListBreadcrumbMixin, ListView):
@@ -99,7 +128,7 @@ class AssessmentListView(ListBreadcrumbMixin, ListView):
     paginate_by = 20
     ordering = ['pk']
     template_name = 'list.html'
-    success_url = reverse_lazy('assessment:assessment_list')
+    #success_url = reverse_lazy('assessment:assessment_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -109,9 +138,10 @@ class AssessmentListView(ListBreadcrumbMixin, ListView):
 
 class AssessmentUpdateView(UpdateBreadcrumbMixin, UpdateView):
     model = Assessment
-    fields = ['match', 'referee', 'user', 'team', 'questionnaire', 'confirm', 'datetime_confirm']
+    fields = "__all__"
     template_name = 'update.html'
     success_url = reverse_lazy('assessment:assessment_list')
+    success_message = _('object updated.')
 
     def get_object(self):
         return Assessment.objects.get(pk=self.kwargs['pk'])
@@ -124,6 +154,18 @@ class AssessmentUpdateView(UpdateBreadcrumbMixin, UpdateView):
 
 class AssessmentDetailView(DetailBreadcrumbMixin, DetailView):
     model = Assessment
+    template_name = 'detail.html'
+
+
+class AssessmentDeleteView(SuccessMessageMixin, DeleteView):
+    model = Assessment
+    success_message = _('object deleted.')
+
+    def get(self, *args, **kwargs):
+        return self.post(*args, **kwargs)
+
+    def get_success_url(self):
+        return reverse_lazy('assessment:assessment_list')
 
 
 

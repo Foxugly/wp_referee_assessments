@@ -4,3 +4,4 @@ django-hijack-admin
 django-extensions
 jupyter
 django-debug-toolbar
+bootstrap4

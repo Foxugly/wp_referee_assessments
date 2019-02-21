@@ -25,6 +25,7 @@ SECRET_KEY = '@3s(c7l2v40%(7lwj^#7ucms(*^z5qk#s@*@7cj7bahddh*%1h'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+STATE = 'DEV' # or ACC or PROD
 
 ALLOWED_HOSTS = ['*']
 
@@ -41,14 +42,14 @@ INSTALLED_APPS = [
     'django_extensions',
     'django_bootstrap_breadcrumbs',
     'view_breadcrumbs',
-    'bootstrap4',
-    'users',
-    'championship',
-    'assessment',
     'debug_toolbar',
     'hijack',
     'compat',
     'hijack_admin',
+    'bootstrap4',
+    'customuser',
+    'championship',
+    'assessment',
 ]
 
 MIDDLEWARE = [
@@ -76,6 +77,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'customuser.context_processors.debug',
             ],
             'libraries': {
                 'common_tags': 'common_tags',
@@ -103,10 +105,10 @@ DATABASES = {
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',    },
-    {        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',    },
-    {        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',    },
-    {        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',    },
+    {'NAME' : 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator', },
+    {'NAME' : 'django.contrib.auth.password_validation.MinimumLengthValidator', },
+    {'NAME' : 'django.contrib.auth.password_validation.CommonPasswordValidator', },
+    {'NAME' : 'django.contrib.auth.password_validation.NumericPasswordValidator', },
 ]
 
 
@@ -135,21 +137,15 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # COMMENT TO PROD / ACTIVE TO TEST
 #STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
 
-AUTH_USER_MODEL = "users.CustomUser"
-#AUTHENTICATION_BACKENDS = ['users.backend.CustomUserBackend']
-
-LANGUAGES = (
-    ('en-us', _("English")),
-    ('fr-be', _("Français")),
-    ('nl-be', _("Nederlands")),
-)
-
 HIJACK_LOGIN_REDIRECT_URL = '/'
 HIJACK_LOGOUT_REDIRECT_URL = '/'
 HIJACK_DISPLAY_WARNINGS = True
 HIJACK_USE_BOOTSTRAP = True
 HIJACK_ALLOW_GET_REQUESTS = True
+
+# if AUTH_USER_MODEL then HIJACK_REGISTER_ADMIN = False
 HIJACK_REGISTER_ADMIN = False
+AUTH_USER_MODEL = "customuser.CustomUser"
 
 if DEBUG:
     def show_toolbar(request):
@@ -239,3 +235,4 @@ BOOTSTRAP4 = {
         'inline': 'bootstrap4.renderers.InlineFieldRenderer',
     },
 }
+

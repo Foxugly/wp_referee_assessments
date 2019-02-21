@@ -14,11 +14,30 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import include, path
-from users.views import CustomUserUpdateView, home, evaluation, stats
+from django.urls import include, path, reverse
+from customuser.views import CustomUserUpdateView 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.apps import apps
+from django.shortcuts import render
+from django.http import HttpResponseRedirect
+from django.utils import translation
+from django import http
+import json
+from customuser.decorators import check_lang
 
+
+#TODO home, evaluation, stats
+
+def set_language(request):
+    if 'lang' in request.GET and 'next' in request.GET:
+        if translation.LANGUAGE_SESSION_KEY in request.session:
+            del request.session[translation.LANGUAGE_SESSION_KEY]
+        translation.activate(request.GET.get('lang'))
+        request.session[translation.LANGUAGE_SESSION_KEY] = request.GET.get('lang')
+        return HttpResponseRedirect(request.GET.get('next'))
+    else:
+        return reverse('home')
 
 urlpatterns = [
     path('',login_required(home), name='home'),
@@ -27,13 +46,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('championship/', include('championship.urls', namespace='championship')),
     path('assessment/', include('assessment.urls', namespace='assessment')),
-    path('update/', login_required(CustomUserUpdateView.as_view()), name="update"),
-
-    path('i18n/', include('django.conf.urls.i18n')),
-    path('select2/', include('django_select2.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/update/', check_lang(CustomUserUpdateView.as_view()), name='update_user'),
     path('hijack/', include('hijack.urls', namespace='hijack')),
 ]
+
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:
     import debug_toolbar

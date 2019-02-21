@@ -1,18 +1,17 @@
 from championship.models import Season, Match, Team, Category, Referee, Competition
-from django.views.generic.edit import CreateView, UpdateView
-from django.views.generic.list import ListView
-from django.views.generic.detail import DetailView
-from django.urls import reverse_lazy, reverse
+from django.views.generic import CreateView, UpdateView, ListView, DetailView
+from django.urls import reverse_lazy
 from view_breadcrumbs import ListBreadcrumbMixin, UpdateBreadcrumbMixin, DetailBreadcrumbMixin, CreateBreadcrumbMixin
-
+from django.contrib.messages.views import SuccessMessageMixin
 
 #--------------------------- SEASON -------------------------------
 
 class SeasonCreateView(CreateBreadcrumbMixin, CreateView):
     model = Season
-    fields = ['name', 'active']
+    fields = '__all__'
     template_name = 'update.html'
     success_url = reverse_lazy('championship:season_list')
+    success_message = _('object created.')
 
 
 class SeasonListView(ListBreadcrumbMixin, ListView):
@@ -20,7 +19,7 @@ class SeasonListView(ListBreadcrumbMixin, ListView):
     paginate_by = 20
     ordering = ['pk']
     template_name = 'list.html'
-    success_url = reverse_lazy('championship:season_list')
+    #success_url = reverse_lazy('championship:season_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -33,6 +32,7 @@ class SeasonUpdateView(UpdateBreadcrumbMixin, UpdateView):
     fields = '__all__'
     template_name = 'update.html'
     success_url = reverse_lazy('championship:season_list')
+    success_message = _('object updated.')
 
     def get_object(self):
         return Season.objects.get(pk=self.kwargs['pk'])
@@ -45,6 +45,18 @@ class SeasonUpdateView(UpdateBreadcrumbMixin, UpdateView):
 
 class SeasonDetailView(DetailBreadcrumbMixin, DetailView):
     model = Season
+    template_name = 'detail.html'
+
+
+class SeasonDeleteView(SuccessMessageMixin, DeleteView):
+    model = Season
+    success_message = _('object deleted.')
+
+    def get(self, *args, **kwargs):
+        return self.post(*args, **kwargs)
+
+    def get_success_url(self):
+        return reverse_lazy('championship:season_list')
 
 #--------------------------- TEAM -------------------------------
 
@@ -53,6 +65,7 @@ class TeamCreateView(CreateBreadcrumbMixin, CreateView):
     fields = '__all__'
     template_name = 'update.html'
     success_url = reverse_lazy('championship:team_list')
+    success_message = _('object created.')
 
 
 class TeamListView(ListBreadcrumbMixin, ListView):
@@ -60,7 +73,7 @@ class TeamListView(ListBreadcrumbMixin, ListView):
     paginate_by = 20
     ordering = ['pk']
     template_name = 'list.html'
-    success_url = reverse_lazy('championship:team_list')
+    #success_url = reverse_lazy('championship:team_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -73,6 +86,7 @@ class TeamUpdateView(UpdateBreadcrumbMixin, UpdateView):
     fields = '__all__'
     template_name = 'update.html'
     success_url = reverse_lazy('championship:team_list')
+    success_message = _('object updated.')
 
     def get_object(self):
         return Team.objects.get(pk=self.kwargs['pk'])
@@ -85,6 +99,18 @@ class TeamUpdateView(UpdateBreadcrumbMixin, UpdateView):
 
 class TeamDetailView(DetailBreadcrumbMixin, DetailView):
     model = Team
+    template_name = 'detail.html'
+
+
+class TeamDeleteView(SuccessMessageMixin, DeleteView):
+    model = Team
+    success_message = _('object deleted.')
+
+    def get(self, *args, **kwargs):
+        return self.post(*args, **kwargs)
+
+    def get_success_url(self):
+        return reverse_lazy('championship:team_list')
 
 #--------------------------- CATEGORY -------------------------------
 
@@ -93,6 +119,7 @@ class CategoryCreateView(CreateBreadcrumbMixin, CreateView):
     fields = '__all__'
     template_name = 'update.html'
     success_url = reverse_lazy('championship:category_list')
+    success_message = _('object created.')
 
 
 class CategoryListView(ListBreadcrumbMixin, ListView):
@@ -100,7 +127,7 @@ class CategoryListView(ListBreadcrumbMixin, ListView):
     paginate_by = 20
     ordering = ['pk']
     template_name = 'list.html'
-    success_url = reverse_lazy('championship:category_list')
+    #success_url = reverse_lazy('championship:category_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -113,6 +140,7 @@ class CategoryUpdateView(UpdateBreadcrumbMixin, UpdateView):
     fields = '__all__'
     template_name = 'update.html'
     success_url = reverse_lazy('championship:category_list')
+    success_message = _('object updated.')
 
     def get_object(self):
         return Category.objects.get(pk=self.kwargs['pk'])
@@ -125,6 +153,18 @@ class CategoryUpdateView(UpdateBreadcrumbMixin, UpdateView):
 
 class CategoryDetailView(DetailBreadcrumbMixin, DetailView):
     model = Category
+    template_name = 'detail.html'
+
+
+class CategoryDeleteView(SuccessMessageMixin, DeleteView):
+    model = Category
+    success_message = _('object deleted.')
+
+    def get(self, *args, **kwargs):
+        return self.post(*args, **kwargs)
+
+    def get_success_url(self):
+        return reverse_lazy('championship:category_list')
 
 #--------------------------- COMPETITION -------------------------------
 
@@ -133,6 +173,7 @@ class CompetitionCreateView(CreateBreadcrumbMixin, CreateView):
     fields = '__all__'
     template_name = 'update.html'
     success_url = reverse_lazy('championship:competition_list')
+    success_message = _('object created.')
 
 
 class CompetitionListView(ListBreadcrumbMixin, ListView):
@@ -140,7 +181,7 @@ class CompetitionListView(ListBreadcrumbMixin, ListView):
     paginate_by = 20
     ordering = ['pk']
     template_name = 'list.html'
-    success_url = reverse_lazy('championship:competition_list')
+    #success_url = reverse_lazy('championship:competition_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -153,6 +194,7 @@ class CompetitionUpdateView(UpdateBreadcrumbMixin, UpdateView):
     fields = '__all__'
     template_name = 'update.html'
     success_url = reverse_lazy('championship:competition_list')
+    success_message = _('object updated.')
 
     def get_object(self):
         return Competition.objects.get(pk=self.kwargs['pk'])
@@ -165,6 +207,18 @@ class CompetitionUpdateView(UpdateBreadcrumbMixin, UpdateView):
 
 class CompetitionDetailView(DetailBreadcrumbMixin, DetailView):
     model = Competition
+    template_name = 'detail.html'
+
+
+class CompetitionDeleteView(SuccessMessageMixin, DeleteView):
+    model = Competition
+    success_message = _('object deleted.')
+
+    def get(self, *args, **kwargs):
+        return self.post(*args, **kwargs)
+
+    def get_success_url(self):
+        return reverse_lazy('championship:competition_list')
 
 #--------------------------- REFEREE -------------------------------
 
@@ -173,13 +227,15 @@ class RefereeCreateView(CreateBreadcrumbMixin, CreateView):
     fields = '__all__'
     template_name = 'update.html'
     success_url = reverse_lazy('championship:referee_list')
+    success_message = _('object created.')
+
 
 class RefereeListView(ListBreadcrumbMixin, ListView):
     model = Referee
     paginate_by = 20
     ordering = ['pk']
     template_name = 'list.html'
-    success_url = reverse_lazy('championship:referee_list')
+    #success_url = reverse_lazy('championship:referee_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -192,6 +248,7 @@ class RefereeUpdateView(UpdateBreadcrumbMixin, UpdateView):
     fields = '__all__'
     template_name = 'update.html'
     success_url = reverse_lazy('championship:referee_list')
+    success_message = _('object updated.')
 
     def get_object(self):
         return Referee.objects.get(pk=self.kwargs['pk'])
@@ -204,6 +261,18 @@ class RefereeUpdateView(UpdateBreadcrumbMixin, UpdateView):
 
 class RefereeDetailView(DetailBreadcrumbMixin, DetailView):
     model = Referee
+    template_name = 'detail.html'
+
+
+class RefereeDeleteView(SuccessMessageMixin, DeleteView):
+    model = Referee
+    success_message = _('object deleted.')
+
+    def get(self, *args, **kwargs):
+        return self.post(*args, **kwargs)
+
+    def get_success_url(self):
+        return reverse_lazy('championship:referee_list')
 
 #--------------------------- MATCH -------------------------------
 
@@ -212,13 +281,15 @@ class MatchCreateView(CreateBreadcrumbMixin, CreateView):
     fields = '__all__'
     template_name = 'update.html'
     success_url = reverse_lazy('championship:match_list')
+    success_message = _('object created.')
+
 
 class MatchListView(ListBreadcrumbMixin, ListView):
     model = Match
     paginate_by = 20
     ordering = ['pk']
     template_name = 'list.html'
-    success_url = reverse_lazy('championship:match_list')
+    #success_url = reverse_lazy('championship:match_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -231,6 +302,7 @@ class MatchUpdateView(UpdateBreadcrumbMixin, UpdateView):
     fields = '__all__'
     template_name = 'update.html'
     success_url = reverse_lazy('championship:match_list')
+    success_message = _('object updated.')
 
     def get_object(self):
         return Match.objects.get(pk=self.kwargs['pk'])
@@ -243,3 +315,15 @@ class MatchUpdateView(UpdateBreadcrumbMixin, UpdateView):
 
 class MatchDetailView(DetailBreadcrumbMixin, DetailView):
     model = Match
+    template_name = 'detail.html'
+
+
+class MatchDeleteView(SuccessMessageMixin, DeleteView):
+    model = Match
+    success_message = _('object deleted.')
+
+    def get(self, *args, **kwargs):
+        return self.post(*args, **kwargs)
+
+    def get_success_url(self):
+        return reverse_lazy('championship:match_list')
