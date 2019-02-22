@@ -89,7 +89,7 @@ class QuestionR(models.Model):
 class Assessment(models.Model):
     match = models.ForeignKey(Match, on_delete=models.CASCADE, verbose_name=_('match'))
     referee = models.ForeignKey(Referee, on_delete=models.CASCADE, verbose_name=_('referee'))
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name=_('user'))
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name=_('user'), null=True)
     team = models.ForeignKey(Team, on_delete=models.CASCADE, verbose_name=_('team'))
     questionnaire = models.ManyToManyField(QuestionR, blank=True, verbose_name=_('type of question'))
     confirm = models.BooleanField(_('confirmation'), default=False)

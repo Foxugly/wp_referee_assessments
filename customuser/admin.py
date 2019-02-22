@@ -15,7 +15,7 @@ class CustomUserAdmin(UserAdmin, HijackUserAdminMixin):
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
         (_('Personal info'), {'fields': ('first_name', 'last_name', 'email')}),
-        (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser', 'is_referee_admin')}),
+        (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser', 'is_referee_admin', 'teams','categories')}),
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
     )
     add_fieldsets = (

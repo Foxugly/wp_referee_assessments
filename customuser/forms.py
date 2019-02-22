@@ -3,7 +3,6 @@ from django.forms import ModelForm
 from customuser.models import CustomUser
 from django.forms.models import ModelMultipleChoiceField
 from championship.models import Team, Category
-#from django_select2.forms import Select2MultipleWidget
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -37,6 +36,3 @@ class CustomUserForm(ModelForm):
     class Meta:
         model = CustomUser
         fields = ['username', 'first_name', 'last_name', 'email', 'language', 'is_staff', 'is_referee_admin', 'is_superuser', 'categories', 'teams', ]
-
-#    teams = ModelMultipleChoiceField(queryset=Team.objects.all(), widget=Select2MultipleWidget)
-#    categories = ModelMultipleChoiceField(queryset=Category.objects.all(), widget=Select2MultipleWidget)

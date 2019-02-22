@@ -25,7 +25,7 @@ from django.utils import translation
 from django import http
 import json
 from customuser.decorators import check_lang, user_can_access, referee_admin_required
-from championship.models import Match, Referee
+from championship.models import Season, Competition, Match, Referee
 from assessment.models import Assessment, Question, QuestionR
 from datetime import datetime
 from django.conf.urls.static import static
@@ -53,10 +53,12 @@ def home(request):
     c['now'] = now
     teams = request.user.get_teams()
     categories = request.user.get_categories()
+    season = Season.objects.get(active=True)
+    comp = Competition.objects.filter(season=season, category__in=categories)
     c['teams'] = list(teams)
     c['categories'] = list(categories)
     if len(teams) and len(categories):
-        m_eval_to_created = Match.objects.filter(teams__in=teams,category__in=categories,datetime__lte=now)
+        m_eval_to_created = Match.objects.filter(teams__in=teams,competition__in=comp,datetime__lte=now)
         for m_eval in m_eval_to_created:
             for team in teams:
                 if team in m_eval.get_teams():
@@ -69,14 +71,14 @@ def home(request):
                                 qr.save()
                                 e.questionnaire.add(qr)
                             e.save()
-        c['all'] = Match.objects.filter(teams__in=teams, category__in=categories).order_by("datetime")
+        c['all'] = Match.objects.filter(teams__in=teams, competition__in=comp).order_by("datetime")
         c['n_all'] = len(c['all'])
         c['done'] = []
         c['todo'] = []
-        for m in Match.objects.filter(teams__in=teams, category__in=categories,datetime__lte=now).order_by("datetime"):
+        for m in Match.objects.filter(teams__in=teams, competition__in=comp,datetime__lte=now).order_by("datetime"):
             done = True
             exist = False
-            for e in Evaluation.objects.filter(match=m):
+            for e in Assessment.objects.filter(match=m):
                 exist = True
                 done = done and e.confirm
             if exist:
@@ -90,7 +92,7 @@ def home(request):
         c['n_done'] = len(c['done'])
         c['n_todo'] = len(c['todo'])
 
-        c['next'] = Match.objects.filter(teams__in=teams,category__in=categories,datetime__gte=now).order_by("datetime")
+        c['next'] = Match.objects.filter(teams__in=teams,competition__in=comp,datetime__gte=now).order_by("datetime")
         c['n_next'] = len(c['next'])
     return render(request, 'club.html', c)
 
@@ -118,6 +120,7 @@ def stats(request):
                 else:
                     values[qr.question.id] += qr.answer
         for q in c['questions']:
+            #TODO 
             notes.append(0 if not n else int((values[q.id]/n)*10))
             d['notes'] = notes
         refs.append(d)
@@ -135,17 +138,17 @@ def evaluation(request, match_id):
             if "question" in key :
                 q_id = key.split("question_")[1]
                 qr = QuestionR.objects.get(id=q_id)
-                answer = int(d[key][0]) if type(d[key]) == list else  int(d[key])
+                answer = int(d[key][0]) if type(d[key]) == list else int(d[key])
                 qr.answer = answer
                 qr.save()
         eid = int(d['eval_id'][0])
-        e = Assessment.objects.get(id=eid)
+        e = Assessment.objects.get(id=eid, team__in=request.user.get_teams())
         e.confirm = True
         e.user = request.user
         e.datetime_confirm = datetime.now()
         e.save()
     c['match'] = Match.objects.get(id=match_id)
-    c['evaluations'] = Assessment.objects.filter(match=c['match'])
+    c['evaluations'] = Assessment.objects.filter(match=c['match'], team__in=request.user.get_teams())
     c['nb_ref'] = len(c['evaluations'])
     return render(request, 'evaluation.html', c)
 

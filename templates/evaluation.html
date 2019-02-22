@@ -3,7 +3,7 @@
 {% block content %}
 {{post}}
 {{question}}
-  <h4>{% trans "Match" %} [{{match.category.name}}] {{ match.datetime|date:"m/d/Y" }}  : {{match.teamH}} - {{match.teamA}}</h4>
+  <h4>{% trans "Match" %} [{{match.competition}}] {{ match.datetime|date:"d/m/Y" }}  : {{match.teamH}} - {{match.teamA}}</h4>
   <h5>{% trans "Referee(s)" %} :</h5>
   <div class="row">
   {% for e in evaluations %}
@@ -53,7 +53,7 @@
         {% if e.confirm %}
         <div class="row p-1">
           <div class="col">
-            <div class="alert alert-success" role="alert">{% trans "Saved" %} {{e.datetime_confirm |date:"m/d/Y"}} {% trans "by" %} {{e.user}}.</div>
+            <div class="alert alert-success" role="alert">{% trans "Saved" %} {{e.datetime_confirm |date:"d/m/Y"}} {% trans "by" %} {{e.user}}.</div>
           </div>
         </div>
         {% else %}

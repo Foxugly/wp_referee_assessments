@@ -1,77 +1,101 @@
-from championship.models import Match, Team, Category, Referee
-from assessment.models import Evaluation, Question, QuestionR
-from users.models import MyUser
+from championship.models import Season, Match, Competition, Team, Category, Referee
+from assessment.models import Assessment, Question, QuestionR
+from customuser.models import CustomUser
 from datetime import datetime
+import random
 
 
-t1 = Team(name="Ixelles")
-t1.save()  
-t2 = Team(name="Ciney")
-t2.save()
-t3 = Team(name="Tournai")
-t3.save()
-t4 = Team(name="Mouscron")
-t4.save()
-r1 = Referee(first_name="Alice", last_name="FRBN")
-r1.save()
-r2 = Referee(first_name="Bob", last_name="FRBN")
-r2.save()
-r3 = Referee(first_name="Eve", last_name="FRBN")
-r3.save()
-c1 = Category(name="SL")
-c1.save()
-c1.teams.add(t3)
-c1.teams.add(t4)
-c1.save()
-c2 = Category(name="SH4")
-c2.save()
-c2.teams.add(t1)
-c2.teams.add(t2)
-c2.save()
-m1 = Match(category=c1,teamH=t4,teamA=t3,datetime=datetime.strptime("1/12/18 20:00", "%d/%m/%y %H:%M"))
-m1.save()
-m1.referees.add(r1)
-m1.referees.add(r2)
-m1.teams.add(t3)
-m1.teams.add(t4)
-m1.save()
-m2 = Match(category=c1,teamH=t3,teamA=t4,datetime=datetime.strptime("1/3/19 20:00", "%d/%m/%y %H:%M"))
-m2.save()
-m2.referees.add(r1)
-m2.referees.add(r3)
-m2.teams.add(t3)
-m2.teams.add(t4)
-m2.save()
-m3 = Match(category=c2,teamH=t1,teamA=t2,datetime=datetime.strptime("1/12/18 20:00", "%d/%m/%y %H:%M"))
-m3.save()
-m3.referees.add(r2)
-m3.teams.add(t1)
-m3.teams.add(t2)
-m3.save()
-m4 = Match(category=c2,teamH=t2,teamA=t1,datetime=datetime.strptime("1/3/19 20:00", "%d/%m/%y %H:%M"))
-m4.save()
-m4.referees.add(r3)
-m4.teams.add(t1)
-m4.teams.add(t2)
-m4.save()
+def round_robin(units, sets = None):
+    """ Generates a schedule of "fair" pairings from a list of units """
+    count = len(units)
+    sets = sets or (count - 1)
+    half = int(count / 2)
+    for turn in range(sets):
+        left = units[:half]
+        right = units[count - half - 1 + 1:][::-1]
+        pairings = zip(left, right)
+        if turn % 2 == 1:
+            pairings = [(y, x) for (x, y) in pairings]
+        units.insert(1, units.pop())
+        yield pairings
+
+s= Season(name="2018-2019")
+s.save()
+
+categories = ["SL", "SH2", "SH3", "SH4", "SD", "U21", "U17", "U15", "U13"]
+for cat in categories:
+	c = Category(name=cat)
+	c.save()
+c1 = Category.objects.get(name="SL")
+comp = Competition(season=s,category=c1)
+comp.save()
+teams = ["RDM Mouscron", "CNT Tournai", "AZC Antwerpen", "RSCM Mechelen", "ENLWP La louvière", "MZV Eeklo", "RBP Poséidon"]
+for team in teams:
+    t = Team(name=team)
+    t.save()
+    comp.teams.add(t)
+
+for i in range(1, 20):
+    r = Referee(first_name="Ref%i" % i, last_name="FRBN")
+    r.save()
+
+dates = ['6/10/2018','13/10/2018','20/10/2018','27/10/2018','3/11/2018','10/11/2018','17/11/2018','24/11/2018','1/12/2018','8/12/2018','15/12/2018','19/01/2019','26/01/2019','2/02/2019','2/03/2019','9/03/2019']
+for matches in list(round_robin(teams, sets = len(teams) * 2 - 2)):
+    if type(matches) is list:
+        ref_1 = random.sample(range(1, 20), 2*len(matches))
+        ref_2 = random.sample(range(1, 20), 2*len(matches))
+        for home,away in matches:
+            teamH = Team.objects.get(name=home)
+            teamA = Team.objects.get(name=away)
+            m1 = Match(competition=comp,teamH=teamH,teamA=teamA,datetime=datetime.strptime("%s 20:00" % dates[0], "%d/%m/%Y %H:%M"))
+            m1.save()
+            m1.teams.add(teamH, teamA)
+            m1.referees.add(Referee.objects.get(id=int(ref_1[0])),Referee.objects.get(id=int(ref_1[1])))
+            del ref_1[0]
+            del ref_1[0]
+            m1.save()
+            m2 = Match(competition=comp,teamH=teamA,teamA=teamH,datetime=datetime.strptime("%s 20:00" % dates[len(teams)], "%d/%m/%Y %H:%M"))
+            m2.save()
+            m2.teams.add(teamH, teamA)
+            m2.referees.add(Referee.objects.get(id=int(ref_2[0])),Referee.objects.get(id=int(ref_2[1])))
+            del ref_2[0]
+            del ref_2[0]
+            m2.save()
+        del dates[0]
+
 q1 = Question(name="Note globale de l'arbitre", priority=1)
 q1.save()
 q2 = Question(name="Impartialité", priority=2)
 q2.save()
 q3 = Question(name="Demande Supervision", priority=3, type_question='BOOL')
 q3.save()
-u2 = MyUser(username="test2", email='test2@test2.be', first_name='test2', last_name='test2')
-u2.set_password("test2test2")
-u2.save()
-u2.teams.add(t4)
-u2.categories.add(c1)
-u2.save()
-u1 = MyUser.objects.get(username="test")
-u1.first_name = "test"
-u1.last_name = "test"
-u1.teams.add(t1)
-u1.categories.add(c2)
+
+
+for m in Match.objects.all():
+    for team in m.get_teams():
+        for ref in m.get_referees():
+            a = Assessment(match=m,team=team,referee=ref)
+            a.save()
+            for q in Question.objects.filter(active=True):
+                qr = QuestionR.objects.create(question=q, priority=q.priority, answer=q.default_value)
+                qr.save()
+                a.questionnaire.add(qr)
+            a.save()
+
+
+u1 = CustomUser.objects.get(username="test")
+u1.first_name = "Renaud"
+u1.last_name = "Vilain"
+u1.teams.add(Team.objects.get(name=teams[0]))
+u1.categories.add(c1)
 u1.save()
-u3 = MyUser(username="refref", email='test3@test3.be', first_name='ref', last_name='FRBN',is_referee_admin=True)
-u3.set_password("refref")
-u3.save()
+
+a = Assessment.objects.filter(match__datetime__lte=datetime.now())
+for i in random.sample(range(0,len(a)),20+random.randint(0, len(a)-20)):
+    a[i].confirm = True
+    a[i].datetime_confirm = datetime.now()
+    a[i].user = u1
+    for qr in a[i].get_sorted_questions():
+        qr.answer = random.randint(qr.question.min_value, qr.question.max_value)
+        qr.save()
+    a[i].save()

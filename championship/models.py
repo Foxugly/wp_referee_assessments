@@ -140,7 +140,7 @@ class Referee(models.Model):
 
 class Match(models.Model):
     datetime = models.DateTimeField(_('datetime of the match'))
-    competition = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name=_('competition'))
+    competition = models.ForeignKey(Competition, on_delete=models.CASCADE, verbose_name=_('competition'))
     teamH = models.ForeignKey(Team, related_name="teamH", on_delete=models.CASCADE, verbose_name=_('team Home'))
     teamA = models.ForeignKey(Team, related_name="teamA",on_delete=models.CASCADE, verbose_name=_('team Away'))
     teams = models.ManyToManyField(Team, related_name="teams", blank=True, verbose_name=_('teams'))
