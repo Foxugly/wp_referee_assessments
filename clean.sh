@@ -1,0 +1,11 @@
+rm db.sqlite3
+rm __pycache__/*.pyc
+rm assessment/__pycache__/*.pyc
+rm assessment/migrations/*.py
+rm assessment/migrations/__pycache__/*.pyc
+rm championship/__pycache__/*.pyc
+rm championship/migrations/*.py
+rm championship/migrations/__pycache__/*.pyc
+rm customuser/__pycache__/*.pyc
+rm customuser/migrations/*.py
+rm customuser/migrations/__pycache__/*.pyc

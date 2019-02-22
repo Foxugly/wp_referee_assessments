@@ -1,9 +1,9 @@
 from view_breadcrumbs import ListBreadcrumbMixin, UpdateBreadcrumbMixin, DetailBreadcrumbMixin, CreateBreadcrumbMixin
-from django.views.generic.edit import CreateView, UpdateView
-from django.views.generic.list import ListView
-from django.views.generic.detail import DetailView
+from django.views.generic import CreateView, UpdateView, ListView, DetailView, DeleteView
 from assessment.models import Question, QuestionR, Assessment
 from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
+from django.contrib.messages.views import SuccessMessageMixin
 # Create your views here.
 #--------------------------- SEASON -------------------------------
 

@@ -26,7 +26,7 @@ class CustomUserForm(ModelForm):
             self.fields['is_staff'].widget.attrs['readonly'] = True
             self.fields['is_staff'].widget.attrs['disabled'] = 'disabled'
             self.fields['is_referee_admin'].widget.attrs['readonly'] = True
-            self.fields['is_refere_admin'].widget.attrs['disabled'] = 'disabled'
+            self.fields['is_referee_admin'].widget.attrs['disabled'] = 'disabled'
             self.fields['is_superuser'].widget.attrs['readonly'] = True
             self.fields['is_superuser'].widget.attrs['disabled'] = 'disabled'
             self.fields['teams'].widget.attrs['readonly'] = True

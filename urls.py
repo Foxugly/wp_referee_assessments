@@ -28,6 +28,7 @@ from customuser.decorators import check_lang, user_can_access, referee_admin_req
 from championship.models import Match, Referee
 from assessment.models import Assessment, Question, QuestionR
 from datetime import datetime
+from django.conf.urls.static import static
 
 
 #TODO home, evaluation, stats
@@ -150,6 +151,7 @@ def evaluation(request, match_id):
 
 urlpatterns = [
     path('',login_required(home), name='home'),
+    path('lang/', set_language, name='lang'),
     path('evaluation/<int:match_id>/',login_required(evaluation), name="evaluation"),
     path('stats/',login_required(stats), name="stats"),
     path('admin/', admin.site.urls),
