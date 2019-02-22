@@ -5,25 +5,7 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.forms import ModelForm
 from django.contrib.messages.views import SuccessMessageMixin
-
-
-class CustomUserForm(ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(CustomUserForm, self).__init__(*args, **kwargs)
-        instance = getattr(self, 'instance', None)
-        if instance and instance.pk:
-            self.fields['is_foo_admin'].widget.attrs['readonly'] = True
-            self.fields['is_foo_admin'].widget.attrs['disabled'] = 'disabled'
-            self.fields['is_superuser'].widget.attrs['readonly'] = True
-            self.fields['is_superuser'].widget.attrs['disabled'] = 'disabled'
-            self.fields['teams'].widget.attrs['readonly'] = True
-            self.fields['teams'].widget.attrs['disabled'] = 'disabled'
-            self.fields['categories'].widget.attrs['readonly'] = True
-            self.fields['categories'].widget.attrs['disabled'] = 'disabled'
-
-    class Meta:
-        model = CustomUser
-        fields = ['username', 'first_name', 'last_name', 'email', 'language', 'is_referee_admin', 'is_superuser', 'categories', 'teams']
+from customuser.forms import CustomUserForm
 
 
 class CustomUserUpdateView(SuccessMessageMixin, UpdateView):
