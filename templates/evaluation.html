@@ -3,10 +3,10 @@
 {% block content %}
 {{post}}
 {{question}}
-  <h4>{% trans "Match" %} [{{match.competition}}] {{ match.datetime|date:"d/m/Y" }}  : {{match.teamH}} - {{match.teamA}}</h4>
+  <h4>{% trans "Match" %} [{{am.match.competition}}] {{ am.match.datetime|date:"d/m/Y" }}  : {{am.match.teamH}} - {{am.match.teamA}}</h4>
   <h5>{% trans "Referee(s)" %} :</h5>
   <div class="row">
-  {% for e in evaluations %}
+  {% for e in am.assessment_referees.all %}
   {% if nb_ref > 1 %}
   <div class="col-sm-6">
   {% else %}
@@ -15,7 +15,7 @@
   <div class="card">
   <div class="card-header">{{ e.referee }}</div>
     <div class="card-body">
-      <form action="/evaluation/{{id}}/" enctype="multipart/form-data" method="post" >
+      <form action="/evaluation/{{am.id}}/" enctype="multipart/form-data" method="post" >
         {% csrf_token %}
         <input type=hidden name="eval_id" value="{{e.id}}" />
         {% for q in e.questionnaire.all %}
@@ -23,7 +23,7 @@
             <div class="col">{{q.question}}</div>
             {% if q.question.type_question == "INT" %}    
                 <div class="col">
-                    <input id="{{q.reponse.name}}" name="question_{{q.id}}" type=number min="{{q.min_value}}" max="{{q.max_value}}" class="form-control text-center" value="{{q.answer}}" />
+                    <input id="{{q.id}}" name="question_{{q.id}}" type=number min="{{q.question.min_value}}" max="{{q.question.max_value}}" class="form-control text-center" value="{{q.answer}}" />
                 </div>
             {% endif %}
             {% if q.question.type_question == "BOOL" %}

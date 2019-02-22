@@ -2,15 +2,23 @@ from django.utils import translation
 from django.conf import settings
 
 from django.core.exceptions import PermissionDenied
-from assessment.models import Match
+from assessment.models import AssessmentMatch
+
+
+def superuser_only(function):
+    def _inner(request, *args, **kwargs):
+        if not request.user.is_superuser:
+            raise PermissionDenied           
+        return function(request, *args, **kwargs)
+    return _inner
 
 
 def user_can_access(function):
     def wrap(request, *args, **kwargs):
-        m = Match.objects.get(pk=kwargs['match_id'])
+        am = AssessmentMatch.objects.get(pk=kwargs['am_id'])
         can = False
         for userteam in request.user.get_teams():
-            can = can or (userteam in m.get_teams())
+            can = can or (userteam == am.team)
         if can:
             return function(request, *args, **kwargs)
         else:

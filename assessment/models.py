@@ -1,8 +1,8 @@
 from django.db import models
-from customuser.models import CustomUser
 from django.utils.translation import gettext_lazy as _
-from championship.models import Match, Referee, Team, Category
 from django.urls import reverse
+from championship.models import Match, Referee, Team, Category
+from customuser.models import CustomUser
 
 
 # Create your models here.
@@ -86,14 +86,22 @@ class QuestionR(models.Model):
         verbose_name = _('QuestionR')
 
 
-class Assessment(models.Model):
+class AssessmentReferee(models.Model):
     match = models.ForeignKey(Match, on_delete=models.CASCADE, verbose_name=_('match'))
     referee = models.ForeignKey(Referee, on_delete=models.CASCADE, verbose_name=_('referee'))
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name=_('user'), null=True)
     team = models.ForeignKey(Team, on_delete=models.CASCADE, verbose_name=_('team'))
-    questionnaire = models.ManyToManyField(QuestionR, blank=True, verbose_name=_('type of question'))
+    questionnaire = models.ManyToManyField(QuestionR, blank=True, verbose_name=_('questionnaire'))
     confirm = models.BooleanField(_('confirmation'), default=False)
     datetime_confirm = models.DateTimeField(_('datetime of confirmation'), blank=True, null=True)
+    refer_am = models.ForeignKey('assessment.AssessmentMatch', verbose_name=_('Assessment  Match'), related_name="back_am", null=True,
+                                   on_delete=models.CASCADE)
+
+    def create_questionrs(self):
+        for q in Question.objects.filter(active=True):
+            qr = QuestionR.objects.create(question=q, priority=q.priority, answer=q.default_value)
+            qr.save()
+            self.questionnaire.add(qr)
 
     def get_sorted_questions(self):
         return self.questionnaire.all().order_by('priority')
@@ -102,19 +110,65 @@ class Assessment(models.Model):
         return "%s - %s " % (self.match, self.referee)
 
     def get_absolute_url(self):
-        return reverse('assessment:assessment_change', kwargs={'pk': self.pk})
+        return reverse('assessment:assessment_referee_change', kwargs={'pk': self.pk})
 
     def get_add_url(self):
-        return  reverse('assessment:assessment_add')
+        return  reverse('assessment:assessment_referee_add')
 
     def get_detail_url(self):
-        return reverse('assessment:assessment_detail', kwargs={'pk': self.pk})
+        return reverse('assessment:assessment_referee_detail', kwargs={'pk': self.pk})
 
     def get_delete_url(self):
-        return reverse('assessment:assessment_delete', kwargs={'pk': self.pk})
+        return reverse('assessment:assessment_referee_delete', kwargs={'pk': self.pk})
 
     def get_list_url(self):
-        return reverse('assessment:assessment_list')
+        return reverse('assessment:assessment_referee_list')
 
     class Meta:
-        verbose_name = _('Assessment')
+        verbose_name = _('Assessment Referee')
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.refer_am.check_done()
+
+
+class AssessmentMatch(models.Model):
+    done = models.BooleanField(_('Done'), default=False)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, verbose_name=_('team'))
+    match = models.ForeignKey(Match, on_delete=models.CASCADE, verbose_name=_('match'))
+    assessment_referees = models.ManyToManyField(AssessmentReferee, blank=True, verbose_name=_('Assessment referees'))
+
+    def __str__(self):
+        return "%s - %s " % (self.match, self.team)
+
+    def get_absolute_url(self):
+        return reverse('assessment:assessment_match_change', kwargs={'pk': self.pk})
+
+    def get_add_url(self):
+        return  reverse('assessment:assessment_match_add')
+
+    def get_detail_url(self):
+        return reverse('assessment:assessment_match_detail', kwargs={'pk': self.pk})
+
+    def get_delete_url(self):
+        return reverse('assessment:assessment_match_delete', kwargs={'pk': self.pkS})
+
+    def get_list_url(self):
+        return reverse('assessment:assessment_match_list')
+
+    def create_assessments_referee(self):
+        for r in self.match.get_referees():
+            ar = AssessmentReferee(match=self.match,referee=r,team=self.team,refer_am=self)
+            ar.save()
+            ar.create_questionrs()
+            self.assessment_referees.add(ar)
+
+    def check_done(self):
+        done = True
+        for ar in self.assessment_referees.all():
+            done = done and ar.confirm
+        self.done = done
+        self.save()
+
+    class Meta:
+        verbose_name = _('Assessment Match')

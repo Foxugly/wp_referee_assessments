@@ -157,7 +157,7 @@ class Match(models.Model):
 
     def get_referees(self):
         return self.referees.all()
-    
+   
     def __str__(self):
         return '[%s] %s : %s - %s' % (self.competition, self.datetime, self.teamH, self.teamA)
 

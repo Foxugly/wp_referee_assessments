@@ -1,44 +1,47 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% block content %}
-<h1>Stats</h1>
-
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">{% trans "Referee(s)" %}</th>
-      <th scope="col">{% trans "# " %}</th>
-      {% for q in questions %}
-      <th scope="col">{{q}}</th>
-      {% endfor %}
-    </tr>
-  </thead>
-  <tbody>
-  {% for e in refs %}
-    <tr>
-      <td>{{e.name}}</td>
-      <td>{{e.matches}}</td>
-      {% for n in e.notes %}
-        <td><div class="progress">
-        <div 
-        {% if n <= 40 %}
-          class="progress-bar bg-danger"
-        {% endif %}
-        {% if n > 40 and n <= 60 %}
-          class="progress-bar bg-warning"
-        {% endif %}
-        {% if n > 60 and n <= 80 %}
-          class="progress-bar bg-info"
-        {% endif %}  
-        {% if n > 80 %}
-          class="progress-bar bg-success"
-        {% endif %} 
-         role="progressbar" style="width: {{n}}%" aria-valuenow="{{n}}" aria-valuemin="0" aria-valuemax="100">{{n}}%</div>
-        </div>
-      </td>
-      {% endfor %}
-    </tr>
-  {% endfor %}
-   </tbody>
-</table>
+<div class="row mt-3 justify-content-center">
+  <h1>{% trans 'Statistics' %}</h1>
+</div>
+<div class="row">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">{% trans "Referee(s)" %}</th>
+        <th scope="col">{% trans "# " %}</th>
+        {% for q in questions %}
+        <th scope="col">{{q}}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+    {% for e in refs %}
+      <tr>
+        <td>{{e.name}}</td>
+        <td>{{e.matches}}</td>
+        {% for n in e.notes %}
+          <td><div class="progress">
+          <div 
+          {% if n <= 40 %}
+            class="progress-bar bg-danger"
+          {% endif %}
+          {% if n > 40 and n <= 60 %}
+            class="progress-bar bg-warning"
+          {% endif %}
+          {% if n > 60 and n <= 80 %}
+            class="progress-bar bg-info"
+          {% endif %}  
+          {% if n > 80 %}
+            class="progress-bar bg-success"
+          {% endif %} 
+           role="progressbar" style="width: {{n}}%" aria-valuenow="{{n}}" aria-valuemin="0" aria-valuemax="100">{{n}}%</div>
+          </div>
+        </td>
+        {% endfor %}
+      </tr>
+    {% endfor %}
+     </tbody>
+  </table>
+</div>
 {% endblock content %}

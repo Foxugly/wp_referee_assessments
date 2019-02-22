@@ -291,7 +291,7 @@ class MatchListView(ListBreadcrumbMixin, ListView):
     paginate_by = 20
     ordering = ['pk']
     template_name = 'list.html'
-    #success_url = reverse_lazy('championship:match_list')
+    success_url = reverse_lazy('championship:match_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

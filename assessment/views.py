@@ -1,6 +1,6 @@
 from view_breadcrumbs import ListBreadcrumbMixin, UpdateBreadcrumbMixin, DetailBreadcrumbMixin, CreateBreadcrumbMixin
 from django.views.generic import CreateView, UpdateView, ListView, DetailView, DeleteView
-from assessment.models import Question, QuestionR, Assessment
+from assessment.models import Question, QuestionR, AssessmentReferee, AssessmentMatch
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.contrib.messages.views import SuccessMessageMixin
@@ -113,22 +113,21 @@ class QuestionRDeleteView(SuccessMessageMixin, DeleteView):
     def get_success_url(self):
         return reverse_lazy('assessment:questionr_list')
 
-#--------------------------- ASSESSMENT -------------------------------
+#--------------------------- ASSESSMENT MATCH---------------------------
 
-class AssessmentCreateView(CreateBreadcrumbMixin, CreateView):
-    model = Assessment
+class AssessmentMatchCreateView(CreateBreadcrumbMixin, CreateView):
+    model = AssessmentMatch
     fields = "__all__"
     template_name = 'update.html'
-    success_url = reverse_lazy('assessment:assessment_list')
+    success_url = reverse_lazy('assessment:assessment_match_list')
     success_message = _('object created.')
 
 
-class AssessmentListView(ListBreadcrumbMixin, ListView):
-    model = Assessment
+class AssessmentMatchListView(ListBreadcrumbMixin, ListView):
+    model = AssessmentMatch
     paginate_by = 20
     ordering = ['pk']
     template_name = 'list.html'
-    #success_url = reverse_lazy('assessment:assessment_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -136,15 +135,15 @@ class AssessmentListView(ListBreadcrumbMixin, ListView):
         return context
 
 
-class AssessmentUpdateView(UpdateBreadcrumbMixin, UpdateView):
-    model = Assessment
+class AssessmentMatchUpdateView(UpdateBreadcrumbMixin, UpdateView):
+    model = AssessmentMatch
     fields = "__all__"
     template_name = 'update.html'
-    success_url = reverse_lazy('assessment:assessment_list')
+    success_url = reverse_lazy('assessment:assessment_match_list')
     success_message = _('object updated.')
 
     def get_object(self):
-        return Assessment.objects.get(pk=self.kwargs['pk'])
+        return AssessmentMatch.objects.get(pk=self.kwargs['pk'])
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -152,20 +151,72 @@ class AssessmentUpdateView(UpdateBreadcrumbMixin, UpdateView):
         return context
 
 
-class AssessmentDetailView(DetailBreadcrumbMixin, DetailView):
-    model = Assessment
+class AssessmentMatchDetailView(DetailBreadcrumbMixin, DetailView):
+    model = AssessmentMatch
     template_name = 'detail.html'
 
 
-class AssessmentDeleteView(SuccessMessageMixin, DeleteView):
-    model = Assessment
+class AssessmentMatchDeleteView(SuccessMessageMixin, DeleteView):
+    model = AssessmentMatch
     success_message = _('object deleted.')
 
     def get(self, *args, **kwargs):
         return self.post(*args, **kwargs)
 
     def get_success_url(self):
-        return reverse_lazy('assessment:assessment_list')
+        return reverse_lazy('assessment:assessment_match_list')
 
+#--------------------------- ASSESSMENT REFEREE--------------------------
+
+class AssessmentRefereeCreateView(CreateBreadcrumbMixin, CreateView):
+    model = AssessmentReferee
+    fields = "__all__"
+    template_name = 'update.html'
+    success_url = reverse_lazy('assessment:assessment_referee_list')
+    success_message = _('object created.')
+
+
+class AssessmentRefereeListView(ListBreadcrumbMixin, ListView):
+    model = AssessmentReferee
+    paginate_by = 20
+    ordering = ['pk']
+    template_name = 'list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['model']= self.model
+        return context
+
+
+class AssessmentRefereeUpdateView(UpdateBreadcrumbMixin, UpdateView):
+    model = AssessmentReferee
+    fields = "__all__"
+    template_name = 'update.html'
+    success_url = reverse_lazy('assessment:assessment_referee_list')
+    success_message = _('object updated.')
+
+    def get_object(self):
+        return AssessmentReferee.objects.get(pk=self.kwargs['pk'])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['model']= self.model
+        return context
+
+
+class AssessmentRefereeDetailView(DetailBreadcrumbMixin, DetailView):
+    model = AssessmentReferee
+    template_name = 'detail.html'
+
+
+class AssessmentRefereeDeleteView(SuccessMessageMixin, DeleteView):
+    model = AssessmentReferee
+    success_message = _('object deleted.')
+
+    def get(self, *args, **kwargs):
+        return self.post(*args, **kwargs)
+
+    def get_success_url(self):
+        return reverse_lazy('assessment:assessment_referee_list')
 
 
