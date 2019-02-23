@@ -72,7 +72,7 @@ class TeamCreateView(CreateBreadcrumbMixin, CreateView):
 
 class TeamListView(ListBreadcrumbMixin, ListView):
     model = Team
-    paginate_by = 20
+    paginate_by = 10
     ordering = ['pk']
     template_name = 'list.html'
     #success_url = reverse_lazy('championship:team_list')
@@ -288,10 +288,10 @@ class MatchCreateView(CreateBreadcrumbMixin, CreateView):
 
 class MatchListView(ListBreadcrumbMixin, ListView):
     model = Match
-    paginate_by = 20
+    paginate_by = 10
     ordering = ['pk']
     template_name = 'list.html'
-    success_url = reverse_lazy('championship:match_list')
+    #success_url = reverse_lazy('championship:match_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
