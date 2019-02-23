@@ -110,19 +110,19 @@ class AssessmentReferee(models.Model):
         return "%s - %s " % (self.match, self.referee)
 
     def get_absolute_url(self):
-        return reverse('assessment:assessment_referee_change', kwargs={'pk': self.pk})
+        return reverse('assessment:assessmentreferee_change', kwargs={'pk': self.pk})
 
     def get_add_url(self):
-        return  reverse('assessment:assessment_referee_add')
+        return  reverse('assessment:assessmentreferee_add')
 
     def get_detail_url(self):
-        return reverse('assessment:assessment_referee_detail', kwargs={'pk': self.pk})
+        return reverse('assessment:assessmentreferee_detail', kwargs={'pk': self.pk})
 
     def get_delete_url(self):
-        return reverse('assessment:assessment_referee_delete', kwargs={'pk': self.pk})
+        return reverse('assessment:assessmentreferee_delete', kwargs={'pk': self.pk})
 
     def get_list_url(self):
-        return reverse('assessment:assessment_referee_list')
+        return reverse('assessment:assessmentreferee_list')
 
     class Meta:
         verbose_name = _('Assessment Referee')
@@ -139,22 +139,22 @@ class AssessmentMatch(models.Model):
     assessment_referees = models.ManyToManyField(AssessmentReferee, blank=True, verbose_name=_('Assessment referees'))
 
     def __str__(self):
-        return "%s - %s " % (self.match, self.team)
+        return "%s -------- %s " % (self.match, self.team)
 
     def get_absolute_url(self):
-        return reverse('assessment:assessment_match_change', kwargs={'pk': self.pk})
+        return reverse('assessment:assessmentmatch_change', kwargs={'pk': self.pk})
 
     def get_add_url(self):
-        return  reverse('assessment:assessment_match_add')
+        return  reverse('assessment:assessmentmatch_add')
 
     def get_detail_url(self):
-        return reverse('assessment:assessment_match_detail', kwargs={'pk': self.pk})
+        return reverse('assessment:assessmentmatch_detail', kwargs={'pk': self.pk})
 
     def get_delete_url(self):
-        return reverse('assessment:assessment_match_delete', kwargs={'pk': self.pkS})
+        return reverse('assessment:assessmentmatch_delete', kwargs={'pk': self.pkS})
 
     def get_list_url(self):
-        return reverse('assessment:assessment_match_list')
+        return reverse('assessment:assessmentmatch_list')
 
     def create_assessments_referee(self):
         for r in self.match.get_referees():

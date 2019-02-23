@@ -119,7 +119,7 @@ class AssessmentMatchCreateView(CreateBreadcrumbMixin, CreateView):
     model = AssessmentMatch
     fields = "__all__"
     template_name = 'update.html'
-    success_url = reverse_lazy('assessment:assessment_match_list')
+    success_url = reverse_lazy('assessment:assessmentmatch_list')
     success_message = _('object created.')
 
 
@@ -139,7 +139,7 @@ class AssessmentMatchUpdateView(UpdateBreadcrumbMixin, UpdateView):
     model = AssessmentMatch
     fields = "__all__"
     template_name = 'update.html'
-    success_url = reverse_lazy('assessment:assessment_match_list')
+    success_url = reverse_lazy('assessment:assessmentmatch_list')
     success_message = _('object updated.')
 
     def get_object(self):
@@ -164,7 +164,7 @@ class AssessmentMatchDeleteView(SuccessMessageMixin, DeleteView):
         return self.post(*args, **kwargs)
 
     def get_success_url(self):
-        return reverse_lazy('assessment:assessment_match_list')
+        return reverse_lazy('assessment:assessmentmatch_list')
 
 #--------------------------- ASSESSMENT REFEREE--------------------------
 
@@ -172,7 +172,7 @@ class AssessmentRefereeCreateView(CreateBreadcrumbMixin, CreateView):
     model = AssessmentReferee
     fields = "__all__"
     template_name = 'update.html'
-    success_url = reverse_lazy('assessment:assessment_referee_list')
+    success_url = reverse_lazy('assessment:assessmentreferee_list')
     success_message = _('object created.')
 
 
@@ -192,7 +192,7 @@ class AssessmentRefereeUpdateView(UpdateBreadcrumbMixin, UpdateView):
     model = AssessmentReferee
     fields = "__all__"
     template_name = 'update.html'
-    success_url = reverse_lazy('assessment:assessment_referee_list')
+    success_url = reverse_lazy('assessment:assessmentreferee_list')
     success_message = _('object updated.')
 
     def get_object(self):
@@ -217,6 +217,6 @@ class AssessmentRefereeDeleteView(SuccessMessageMixin, DeleteView):
         return self.post(*args, **kwargs)
 
     def get_success_url(self):
-        return reverse_lazy('assessment:assessment_referee_list')
+        return reverse_lazy('assessment:assessmentreferee_list')
 
 

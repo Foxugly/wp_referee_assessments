@@ -39,4 +39,4 @@ class CustomUser(AbstractUser):
         return self.teams.all()
 
     def get_categories(self):
-    	return self.categories.all()
+        return self.categories.all()

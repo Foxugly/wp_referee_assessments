@@ -81,12 +81,13 @@ class Category(models.Model):
 
 
 class Competition(models.Model):
+    name = models.CharField(_('name'), max_length=30, blank=True)
     season = models.ForeignKey(Season, on_delete=models.CASCADE, verbose_name=_('season'))
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name=_('category'))
     teams = models.ManyToManyField(Team, blank=True, verbose_name=_('teams'))
 
     def __str__(self):
-        return "%s - %s" % (self.season, self.category)
+        return "%s - %s %s" % (self.season, self.category, self.name)
 
     def get_absolute_url(self):
         return reverse('championship:competition_change', kwargs={'pk': self.pk})
@@ -159,7 +160,7 @@ class Match(models.Model):
         return self.referees.all()
    
     def __str__(self):
-        return '[%s] %s : %s - %s' % (self.competition, self.datetime, self.teamH, self.teamA)
+        return '[%s] %s : %s - %s' % (self.competition, self.datetime.strftime("%d/%m/%Y %H:%M"), self.teamH, self.teamA)
 
     def get_absolute_url(self):
         return reverse('championship:match_change', kwargs={'pk': self.pk})
