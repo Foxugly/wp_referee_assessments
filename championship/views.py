@@ -294,8 +294,9 @@ class MatchCreateView(CreateBreadcrumbMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(MatchCreateView, self).get_context_data(**kwargs)
-        context['add_class_to_fields'] = {'id_datetime' : 'datetime'}
+        context['add_class_to_fields'] = {'id_datetime': 'datetime'}
         return context
+
 
 class MatchListView(ListBreadcrumbMixin, ListView):
     model = Match
