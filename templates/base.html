@@ -100,46 +100,71 @@
       {% block content %}{% endblock content %}
     </div>
     {% bootstrap_javascript jquery='full' %}
+    <script type="text/javascript" src="{% static 'bootbox/bootbox.min.js' %}"></script>
     <script type="text/javascript" src="//momentjs.com/downloads/moment-with-locales.js"></script>
     <script type="text/javascript" src="{% static 'select2/js/bootstrap-select.js' %}"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs4-4.1.1/dt-1.10.18/b-1.5.4/datatables.min.js"></script>
     <script type="text/javascript" src='{% static "bootstrap4-datetimepicker-master/build/js/bootstrap-datetimepicker.min.js" %}'></script>
 
-
   <script>
 
     $(document).ready(function(){
-      $('select').selectpicker();
-      $('#table_datatable').DataTable({
-        'dom': "<'row mt-2'<'col-sm-5 col-md-5'f><'col-sm-4 col-md-4'l> <'col-sm-3 col-md-3 text-right'B>>" +
-          "<'row'<'col-sm-12'tr>>" +
-          "<'row mb-5'<'col-sm-7 col-md-7'p><'col-sm-5 col-md-5'i>>" ,
-        'buttons' : [
-            {
-                text: '<span class="fa fa-plus"></span> {% trans 'Add' %}',
-                className: 'btn btn-primary',
-                action: function () {
-                    window.location.replace('{{ model.get_add_url }}');
+
+        $('.confirmation').on('click', function (e) {
+            e.preventDefault();
+            href = $(this).attr('href');
+            bootbox.confirm({
+                message: "{% trans "Do you really want to delete selected object ?" %}",
+                buttons: {
+                    confirm: {
+                        label: "{% trans "Yes" %}",
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: "{% trans "No" %}",
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                  if (result) {
+                    window.location = href
+                  }
                 }
-            }
-        ],
-        'language' : {
-            {% if LANGUAGE_CODE == "fr" %}"url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/French.json"{% endif %}
-            {% if LANGUAGE_CODE == "nl" %}"url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Dutch.json"{% endif %}
-            {% if LANGUAGE_CODE == "en" %}"url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/English.json"{% endif %}
-        },   
-      });
+            }); // end bootbox.confirm
+        }); // end click
+
+      $('select').selectpicker();
+
+
+      $('#table_datatable').DataTable({
+          'dom': "<'row mt-2'<'col-sm-5 col-md-5'f><'col-sm-4 col-md-4'l> <'col-sm-3 col-md-3 text-right'B>>" +
+              "<'row'<'col-sm-12'tr>>" +
+              "<'row mb-5'<'col-sm-7 col-md-7'p><'col-sm-5 col-md-5'i>>" ,
+          'buttons' : [
+              {   text: '<span class="fa fa-plus"></span> {% trans 'Add' %}',
+                  className: 'btn btn-primary',
+                  action: function () {
+                      window.location.replace('{{ model.get_add_url }}');
+                  }
+              }
+          ],
+          'language' : {
+              {% if LANGUAGE_CODE == "fr" %} "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/French.json" {% endif %}
+              {% if LANGUAGE_CODE == "nl" %} "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Dutch.json" {% endif %}
+              {% if LANGUAGE_CODE == "en" %} "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/English.json" {% endif %}
+          },   
+      }); // end datatable
+
       {% for key, value in add_class_to_fields.items %}
         {% if value == "datetime" %}
-          $({{key}}).datetimepicker({locale: '{{LANGUAGE_CODE}}', format: 'LLLL'});
+          $( {{ key }} ).datetimepicker({locale: '{{LANGUAGE_CODE}}', format: 'LLLL'});
         {% elif value == "date" %}
-          $({{key}}).datetimepicker({locale: '{{LANGUAGE_CODE}}', format: 'L'});
+          $( {{ key }} ).datetimepicker({locale: '{{LANGUAGE_CODE}}', format: 'L'});
         {% elif value == "time" %}
-          $({{key}}).datetimepicker({locale: '{{LANGUAGE_CODE}}', format: 'LTS'});
+          $( {{ key }} ).datetimepicker({locale: '{{LANGUAGE_CODE}}', format: 'LTS'});
         {% endif %}
       {% endfor %}
-
-  });
+  }); // end document
   </script>
     {% if DEBUG %}
       </div>

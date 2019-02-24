@@ -17,7 +17,7 @@
       <tr>
       	<td><a href="{{obj.get_absolute_url}}">{{ obj }}</a></td>
       	<td><a class="btn" href="{{obj.get_detail_url}}"><span class="fa fa-eye"></span></a></td>
-    		<td><a class="btn" href="{{obj.get_delete_url}}"><span class="fa fa-trash"></span></a></td>
+    		<td><a class="btn confirmation" href="{{obj.get_delete_url}}"><span class="fa fa-trash"></span></a></td>
       </tr>
   {% empty %}
       <tr><td>No objects yet.</td></tr>
