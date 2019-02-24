@@ -1,6 +1,7 @@
 {% load i18n static hijack_tags bootstrap4 common_tags django_bootstrap_breadcrumbs %}
 <!DOCTYPE html>
-<html lang="en">
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{LANGUAGE_CODE}}">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -11,7 +12,8 @@
     {% bootstrap_css %}
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" href="{% static 'select2/css/bootstrap-select.css' %}" />
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4-4.1.1/dt-1.10.18/b-1.5.4/datatables.min.css"/>
+    <link rel="stylesheet" type="text/css" href='{% static "bootstrap4-datetimepicker-master/build/css/bootstrap-datetimepicker.min.css" %}' />
     <link rel="stylesheet" type="text/css" href="{% static 'hijack/hijack-styles.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
   </head>
@@ -62,7 +64,6 @@
         </ul>
         <ul class="navbar-nav navbar-right">
           <li>
-            {% get_current_language as LANGUAGE_CODE %}
               {% get_available_languages as LANGUAGES %}
               {% get_language_info_list for LANGUAGES as languages %}
             <div class="btn-toolbar" role="toolbar">
@@ -99,12 +100,14 @@
       {% block content %}{% endblock content %}
     </div>
     {% bootstrap_javascript jquery='full' %}
+    <script type="text/javascript" src="//momentjs.com/downloads/moment-with-locales.js"></script>
     <script type="text/javascript" src="{% static 'select2/js/bootstrap-select.js' %}"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4-4.1.1/dt-1.10.18/b-1.5.4/datatables.min.js"></script>
+    <script type="text/javascript" src='{% static "bootstrap4-datetimepicker-master/build/js/bootstrap-datetimepicker.min.js" %}'></script>
+
 
   <script>
+
     $(document).ready(function(){
       $('select').selectpicker();
       $('#table_datatable').DataTable({
@@ -121,11 +124,21 @@
             }
         ],
         'language' : {
-            {% if LANGUAGE_CODE == "fr" %}"url": "https://cdn.datatables.net/plug-ins/1.10.19/i18n/French.json"{% endif %}
-            {% if LANGUAGE_CODE == "nl" %}"url": "https://cdn.datatables.net/plug-ins/1.10.19/i18n/Dutch.json"{% endif %}
-            {% if LANGUAGE_CODE == "en" %}"url": "https://cdn.datatables.net/plug-ins/1.10.19/i18n/English.json"{% endif %}
+            {% if LANGUAGE_CODE == "fr" %}"url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/French.json"{% endif %}
+            {% if LANGUAGE_CODE == "nl" %}"url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Dutch.json"{% endif %}
+            {% if LANGUAGE_CODE == "en" %}"url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/English.json"{% endif %}
         },   
       });
+      {% for key, value in add_class_to_fields.items %}
+        {% if value == "datetime" %}
+          $({{key}}).datetimepicker({locale: '{{LANGUAGE_CODE}}', format: 'LLLL'});
+        {% elif value == "date" %}
+          $({{key}}).datetimepicker({locale: '{{LANGUAGE_CODE}}', format: 'L'});
+        {% elif value == "time" %}
+          $({{key}}).datetimepicker({locale: '{{LANGUAGE_CODE}}', format: 'LTS'});
+        {% endif %}
+      {% endfor %}
+
   });
   </script>
     {% if DEBUG %}

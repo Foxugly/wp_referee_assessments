@@ -6,6 +6,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.utils.translation import gettext_lazy as _
 from django.contrib.messages.views import SuccessMessageMixin
 
+
 # --------------------------- SEASON -------------------------------
 
 
@@ -291,6 +292,10 @@ class MatchCreateView(CreateBreadcrumbMixin, CreateView):
     success_url = reverse_lazy('championship:match_list')
     success_message = _('object created.')
 
+    def get_context_data(self, **kwargs):
+        context = super(MatchCreateView, self).get_context_data(**kwargs)
+        context['add_class_to_fields'] = {'id_datetime' : 'datetime'}
+        return context
 
 class MatchListView(ListBreadcrumbMixin, ListView):
     model = Match
