@@ -6,7 +6,8 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.utils.translation import gettext_lazy as _
 from django.contrib.messages.views import SuccessMessageMixin
 
-#--------------------------- SEASON -------------------------------
+# --------------------------- SEASON -------------------------------
+
 
 class SeasonCreateView(CreateBreadcrumbMixin, CreateView):
     model = Season
@@ -25,7 +26,7 @@ class SeasonListView(ListBreadcrumbMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['model']= self.model
+        context['model'] = self.model
         return context
 
 
@@ -41,7 +42,7 @@ class SeasonUpdateView(UpdateBreadcrumbMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['model']= self.model
+        context['model'] = self.model
         return context
 
 
@@ -60,7 +61,8 @@ class SeasonDeleteView(SuccessMessageMixin, DeleteView):
     def get_success_url(self):
         return reverse_lazy('championship:season_list')
 
-#--------------------------- TEAM -------------------------------
+# --------------------------- TEAM -------------------------------
+
 
 class TeamCreateView(CreateBreadcrumbMixin, CreateView):
     model = Team
@@ -79,7 +81,7 @@ class TeamListView(ListBreadcrumbMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['model']= self.model
+        context['model'] = self.model
         return context
 
 
@@ -95,7 +97,7 @@ class TeamUpdateView(UpdateBreadcrumbMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['model']= self.model
+        context['model'] = self.model
         return context
 
 
@@ -114,7 +116,8 @@ class TeamDeleteView(SuccessMessageMixin, DeleteView):
     def get_success_url(self):
         return reverse_lazy('championship:team_list')
 
-#--------------------------- CATEGORY -------------------------------
+# --------------------------- CATEGORY -------------------------------
+
 
 class CategoryCreateView(CreateBreadcrumbMixin, CreateView):
     model = Category
@@ -133,7 +136,7 @@ class CategoryListView(ListBreadcrumbMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['model']= self.model
+        context['model'] = self.model
         return context
 
 
@@ -149,7 +152,7 @@ class CategoryUpdateView(UpdateBreadcrumbMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['model']= self.model
+        context['model'] = self.model
         return context
 
 
@@ -168,7 +171,8 @@ class CategoryDeleteView(SuccessMessageMixin, DeleteView):
     def get_success_url(self):
         return reverse_lazy('championship:category_list')
 
-#--------------------------- COMPETITION -------------------------------
+# --------------------------- COMPETITION -------------------------------
+
 
 class CompetitionCreateView(CreateBreadcrumbMixin, CreateView):
     model = Competition
@@ -187,7 +191,7 @@ class CompetitionListView(ListBreadcrumbMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['model']= self.model
+        context['model'] = self.model
         return context
 
 
@@ -203,7 +207,7 @@ class CompetitionUpdateView(UpdateBreadcrumbMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['model']= self.model
+        context['model'] = self.model
         return context
 
 
@@ -222,7 +226,8 @@ class CompetitionDeleteView(SuccessMessageMixin, DeleteView):
     def get_success_url(self):
         return reverse_lazy('championship:competition_list')
 
-#--------------------------- REFEREE -------------------------------
+# --------------------------- REFEREE -------------------------------
+
 
 class RefereeCreateView(CreateBreadcrumbMixin, CreateView):
     model = Referee
@@ -241,7 +246,7 @@ class RefereeListView(ListBreadcrumbMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['model']= self.model
+        context['model'] = self.model
         return context
 
 
@@ -257,7 +262,7 @@ class RefereeUpdateView(UpdateBreadcrumbMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['model']= self.model
+        context['model'] = self.model
         return context
 
 
@@ -276,7 +281,8 @@ class RefereeDeleteView(SuccessMessageMixin, DeleteView):
     def get_success_url(self):
         return reverse_lazy('championship:referee_list')
 
-#--------------------------- MATCH -------------------------------
+# --------------------------- MATCH -------------------------------
+
 
 class MatchCreateView(CreateBreadcrumbMixin, CreateView):
     model = Match
@@ -288,14 +294,14 @@ class MatchCreateView(CreateBreadcrumbMixin, CreateView):
 
 class MatchListView(ListBreadcrumbMixin, ListView):
     model = Match
-    paginate_by = 10
+    # paginate_by = 10
     ordering = ['pk']
-    template_name = 'list.html'
+    template_name = 'list_datatable.html'
     #success_url = reverse_lazy('championship:match_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['model']= self.model
+        context['model'] = self.model
         return context
 
 
@@ -311,7 +317,7 @@ class MatchUpdateView(UpdateBreadcrumbMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['model']= self.model
+        context['model'] = self.model
         return context
 
 

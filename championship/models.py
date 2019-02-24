@@ -14,7 +14,7 @@ class Season(models.Model):
         return reverse('championship:season_change', kwargs={'pk': self.pk})
 
     def get_add_url(self):
-        return  reverse('championship:season_add')
+        return reverse('championship:season_add')
 
     def get_detail_url(self):
         return reverse('championship:season_detail', kwargs={'pk': self.pk})
@@ -40,7 +40,7 @@ class Team(models.Model):
         return reverse('championship:team_change', kwargs={'pk': self.pk})
 
     def get_add_url(self):
-        return  reverse('championship:team_add')
+        return reverse('championship:team_add')
 
     def get_detail_url(self):
         return reverse('championship:team_detail', kwargs={'pk': self.pk})
@@ -65,7 +65,7 @@ class Category(models.Model):
         return reverse('championship:category_change', kwargs={'pk': self.pk})
 
     def get_add_url(self):
-        return  reverse('championship:category_add')
+        return reverse('championship:category_add')
 
     def get_detail_url(self):
         return reverse('championship:category_detail', kwargs={'pk': self.pk})
@@ -82,8 +82,10 @@ class Category(models.Model):
 
 class Competition(models.Model):
     name = models.CharField(_('name'), max_length=30, blank=True)
-    season = models.ForeignKey(Season, on_delete=models.CASCADE, verbose_name=_('season'))
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name=_('category'))
+    season = models.ForeignKey(
+        Season, on_delete=models.CASCADE, verbose_name=_('season'))
+    category = models.ForeignKey(
+        Category, on_delete=models.CASCADE, verbose_name=_('category'))
     teams = models.ManyToManyField(Team, blank=True, verbose_name=_('teams'))
 
     def __str__(self):
@@ -93,7 +95,7 @@ class Competition(models.Model):
         return reverse('championship:competition_change', kwargs={'pk': self.pk})
 
     def get_add_url(self):
-        return  reverse('championship:competition_add')
+        return reverse('championship:competition_add')
 
     def get_detail_url(self):
         return reverse('championship:competition_detail', kwargs={'pk': self.pk})
@@ -124,7 +126,7 @@ class Referee(models.Model):
         return reverse('championship:referee_change', kwargs={'pk': self.pk})
 
     def get_add_url(self):
-        return  reverse('championship:referee_add')
+        return reverse('championship:referee_add')
 
     def get_detail_url(self):
         return reverse('championship:referee_detail', kwargs={'pk': self.pk})
@@ -141,24 +143,29 @@ class Referee(models.Model):
 
 class Match(models.Model):
     datetime = models.DateTimeField(_('datetime of the match'))
-    competition = models.ForeignKey(Competition, on_delete=models.CASCADE, verbose_name=_('competition'))
-    teamH = models.ForeignKey(Team, related_name="teamH", on_delete=models.CASCADE, verbose_name=_('team Home'))
-    teamA = models.ForeignKey(Team, related_name="teamA",on_delete=models.CASCADE, verbose_name=_('team Away'))
-    teams = models.ManyToManyField(Team, related_name="teams", blank=True, verbose_name=_('teams'))
-    referees = models.ManyToManyField(Referee, blank=True, verbose_name=_('referees'))
+    competition = models.ForeignKey(
+        Competition, on_delete=models.CASCADE, verbose_name=_('competition'))
+    teamH = models.ForeignKey(Team, related_name="teamH",
+                              on_delete=models.CASCADE, verbose_name=_('team Home'))
+    teamA = models.ForeignKey(Team, related_name="teamA",
+                              on_delete=models.CASCADE, verbose_name=_('team Away'))
+    teams = models.ManyToManyField(
+        Team, related_name="teams", blank=True, verbose_name=_('teams'))
+    referees = models.ManyToManyField(
+        Referee, blank=True, verbose_name=_('referees'))
 
     def get_teams(self):
         return self.teams.all()
 
     def get_teams_s(self):
         return [t.name for t in self.teams.all()]
-    
+
     def get_referees_s(self):
         return [r.name for r in self.referees.all()]
 
     def get_referees(self):
         return self.referees.all()
-   
+
     def __str__(self):
         return '[%s] %s : %s - %s' % (self.competition, self.datetime.strftime("%d/%m/%Y %H:%M"), self.teamH, self.teamA)
 
@@ -166,7 +173,7 @@ class Match(models.Model):
         return reverse('championship:match_change', kwargs={'pk': self.pk})
 
     def get_add_url(self):
-        return  reverse('championship:match_add')
+        return reverse('championship:match_add')
 
     def get_detail_url(self):
         return reverse('championship:match_detail', kwargs={'pk': self.pk})

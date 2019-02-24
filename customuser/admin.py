@@ -10,12 +10,14 @@ from hijack_admin.admin import HijackUserAdminMixin
 class CustomUserAdmin(UserAdmin, HijackUserAdminMixin):
     form = CustomUserChangeForm
     add_form = CustomUserCreationForm
-    list_display = ('username', 'email', 'first_name', 'last_name', 'is_active', 'is_superuser', 'is_referee_admin', 'hijack_field',)
+    list_display = ('username', 'email', 'first_name', 'last_name',
+                    'is_active', 'is_superuser', 'is_referee_admin', 'hijack_field',)
     list_filter = ('is_staff', 'is_superuser', 'is_active', 'is_referee_admin')
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
         (_('Personal info'), {'fields': ('first_name', 'last_name', 'email')}),
-        (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser', 'is_referee_admin', 'teams','categories')}),
+        (_('Permissions'), {'fields': ('is_active', 'is_staff',
+                                       'is_superuser', 'is_referee_admin', 'teams', 'categories')}),
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
     )
     add_fieldsets = (
@@ -26,7 +28,7 @@ class CustomUserAdmin(UserAdmin, HijackUserAdminMixin):
     )
     search_fields = ('username', 'first_name', 'last_name', 'email')
     ordering = ('username',)
-    filter_horizontal = ('teams','categories')
+    filter_horizontal = ('teams', 'categories')
 
 
 admin.site.register(CustomUser, CustomUserAdmin)

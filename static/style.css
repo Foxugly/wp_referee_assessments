@@ -1,6 +1,26 @@
 body {
       padding-top: 4.5rem;
     }
+table{
+  width:100%;
+}
+
+
+.dataTables_filter{
+  float:left;
+}
+.dataTables_length{
+  float:center;
+}
+.pagination{
+  float:left;
+}
+
+.dataTables_info{
+  float:right;
+}
+
+
 .box{
     position: relative;
     background: #fff;

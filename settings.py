@@ -25,7 +25,7 @@ SECRET_KEY = '@3s(c7l2v40%(7lwj^#7ucms(*^z5qk#s@*@7cj7bahddh*%1h'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-STATE = 'DEV' # or ACC or PROD
+STATE = 'DEV'  # or ACC or PROD
 
 ALLOWED_HOSTS = ['*']
 
@@ -105,10 +105,10 @@ DATABASES = {
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {'NAME' : 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator', },
-    {'NAME' : 'django.contrib.auth.password_validation.MinimumLengthValidator', },
-    {'NAME' : 'django.contrib.auth.password_validation.CommonPasswordValidator', },
-    {'NAME' : 'django.contrib.auth.password_validation.NumericPasswordValidator', },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator', },
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator', },
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator', },
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator', },
 ]
 
 
@@ -224,7 +224,7 @@ BOOTSTRAP4 = {
     'success_css_class': 'has-success',
 
     # Renderers (only set these if you have studied the source and understand the inner workings)
-    'formset_renderers':{
+    'formset_renderers': {
         'default': 'bootstrap4.renderers.FormsetRenderer',
     },
     'form_renderers': {
@@ -235,4 +235,3 @@ BOOTSTRAP4 = {
         'inline': 'bootstrap4.renderers.InlineFieldRenderer',
     },
 }
-

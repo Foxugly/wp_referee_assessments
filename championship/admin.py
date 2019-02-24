@@ -4,27 +4,27 @@ from .models import Season, Category, Competition, Team, Referee, Match
 
 # Register your models here.
 class SeasonAdmin(admin.ModelAdmin):
-	pass
+    pass
 
 
 class CategoryAdmin(admin.ModelAdmin):
-	pass
+    pass
 
 
 class CompetitionAdmin(admin.ModelAdmin):
-	pass
+    pass
 
 
 class TeamAdmin(admin.ModelAdmin):
-	pass
+    pass
 
 
 class RefereeAdmin(admin.ModelAdmin):
-	pass
+    pass
 
 
 class MatchAdmin(admin.ModelAdmin):
-	pass
+    pass
 
 
 admin.site.register(Season, SeasonAdmin)

@@ -30,22 +30,24 @@ def set_language(request):
         if translation.LANGUAGE_SESSION_KEY in request.session:
             del request.session[translation.LANGUAGE_SESSION_KEY]
         translation.activate(request.GET.get('lang'))
-        request.session[translation.LANGUAGE_SESSION_KEY] = request.GET.get('lang')
+        request.session[translation.LANGUAGE_SESSION_KEY] = request.GET.get(
+            'lang')
         return HttpResponseRedirect(request.GET.get('next'))
     else:
         return reverse('home')
 
 
 urlpatterns = [
-    path('',login_required(home), name='home'),
+    path('', login_required(home), name='home'),
     path('lang/', set_language, name='lang'),
-    path('evaluation/<int:am_id>/',login_required(evaluation), name="evaluation"),
-    path('stats/',login_required(stats), name="stats"),
+    path('evaluation/<int:am_id>/', login_required(evaluation), name="evaluation"),
+    path('stats/', login_required(stats), name="stats"),
     path('admin/', admin.site.urls),
     path('championship/', include('championship.urls', namespace='championship')),
     path('assessment/', include('assessment.urls', namespace='assessment')),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('accounts/update/', login_required(check_lang(CustomUserUpdateView.as_view())), name='update_user'),
+    path('accounts/update/',
+         login_required(check_lang(CustomUserUpdateView.as_view())), name='update_user'),
     path('hijack/', include('hijack.urls', namespace='hijack')),
 ]
 
@@ -53,4 +55,4 @@ urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:
     import debug_toolbar
-    urlpatterns += [ path('__debug__/', include(debug_toolbar.urls)), ]
+    urlpatterns += [path('__debug__/', include(debug_toolbar.urls)), ]

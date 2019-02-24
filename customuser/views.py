@@ -46,7 +46,8 @@ def home(request):
     c['teams'] = list(teams)
     c['categories'] = list(categories)
     if len(teams) and len(categories):
-        c['all'] = AssessmentMatch.objects.filter(team__in=teams, match__competition__in=comp).order_by("match__datetime")
+        c['all'] = AssessmentMatch.objects.filter(
+            team__in=teams, match__competition__in=comp).order_by("match__datetime")
         c['n_all'] = len(c['all'])
         c['done'] = []
         c['todo'] = []
@@ -57,7 +58,8 @@ def home(request):
                 c['todo'].append(am)
         c['n_done'] = len(c['done'])
         c['n_todo'] = len(c['todo'])
-        c['next'] = AssessmentMatch.objects.filter(team__in=teams, match__competition__in=comp, match__datetime__gte=now).order_by("match__datetime")
+        c['next'] = AssessmentMatch.objects.filter(
+            team__in=teams, match__competition__in=comp, match__datetime__gte=now).order_by("match__datetime")
         c['n_next'] = len(c['next'])
     return render(request, 'club.html', c)
 
@@ -66,7 +68,7 @@ def home(request):
 @referee_admin_required
 def stats(request):
     c = {}
-    refs=[]
+    refs = []
     q = Question.objects.all().order_by('id')
     c['questions'] = Question.objects.all().order_by('id')
     for r in Referee.objects.all():
@@ -78,9 +80,9 @@ def stats(request):
         values = {}
         n = 0
         for e in eval_r:
-            n+=1
+            n += 1
             for qr in e.get_sorted_questions():
-                if qr.question.id not in values :
+                if qr.question.id not in values:
                     values[qr.question.id] = qr.answer/qr.question.max_value
                 else:
                     values[qr.question.id] += qr.answer/qr.question.max_value
@@ -91,23 +93,26 @@ def stats(request):
     c['refs'] = refs
     return render(request, 'stats.html', c)
 
+
 @login_required
 @user_can_access
 def evaluation(request, am_id):
     c = {}
-    c['id']= am_id
+    c['id'] = am_id
     am = AssessmentMatch.objects.get(id=am_id)
     if request.method == 'POST':
         d = dict(request.POST)
         for key in d.keys():
-            if "question" in key :
+            if "question" in key:
                 q_id = key.split("question_")[1]
                 qr = QuestionR.objects.get(id=q_id)
-                answer = int(d[key][0]) if type(d[key]) == list else int(d[key])
+                answer = int(d[key][0]) if type(
+                    d[key]) == list else int(d[key])
                 qr.answer = answer
                 qr.save()
         eid = int(d['eval_id'][0])
-        e = AssessmentReferee.objects.get(id=eid, team__in=request.user.get_teams())
+        e = AssessmentReferee.objects.get(
+            id=eid, team__in=request.user.get_teams())
         e.confirm = True
         e.user = request.user
         e.datetime_confirm = timezone.now()

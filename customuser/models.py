@@ -24,10 +24,13 @@ class CustomUserManager(BaseUserManager):
 
 
 class CustomUser(AbstractUser):
-    language = models.CharField(_("language"), max_length=8, choices=LANGUAGES, default=1)
+    language = models.CharField(
+        _("language"), max_length=8, choices=LANGUAGES, default=1)
     teams = models.ManyToManyField(Team, blank=True, verbose_name=_('teams'))
-    categories = models.ManyToManyField(Category, blank=True, verbose_name=_('categories'))
-    is_referee_admin = models.BooleanField(_("Referee admin"), default=False, help_text=_('Designates users that can access to statistics.'),)
+    categories = models.ManyToManyField(
+        Category, blank=True, verbose_name=_('categories'))
+    is_referee_admin = models.BooleanField(_("Referee admin"), default=False, help_text=_(
+        'Designates users that can access to statistics.'),)
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'username'

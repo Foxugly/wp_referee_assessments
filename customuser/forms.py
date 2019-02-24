@@ -35,4 +35,5 @@ class CustomUserForm(ModelForm):
 
     class Meta:
         model = CustomUser
-        fields = ['username', 'first_name', 'last_name', 'email', 'language', 'is_staff', 'is_referee_admin', 'is_superuser', 'categories', 'teams', ]
+        fields = ['username', 'first_name', 'last_name', 'email', 'language',
+                  'is_staff', 'is_referee_admin', 'is_superuser', 'categories', 'teams', ]

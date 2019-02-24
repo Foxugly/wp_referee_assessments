@@ -11,8 +11,7 @@
     {% bootstrap_css %}
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" href="{% static 'select2/css/bootstrap-select.css' %}" />
-    <!--<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css" />
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" />-->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" />
     <link rel="stylesheet" type="text/css" href="{% static 'hijack/hijack-styles.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
   </head>
@@ -101,16 +100,34 @@
     </div>
     {% bootstrap_javascript jquery='full' %}
     <script type="text/javascript" src="{% static 'select2/js/bootstrap-select.js' %}"></script>
-    <!--<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>-->
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
 
-    <script>
-      $(document).ready(function(){
-        $('select').selectpicker();
-        //$('table').DataTable();
+  <script>
+    $(document).ready(function(){
+      $('select').selectpicker();
+      $('#table_datatable').DataTable({
+        'dom': "<'row mt-2'<'col-sm-5 col-md-5'f><'col-sm-4 col-md-4'l> <'col-sm-3 col-md-3 text-right'B>>" +
+          "<'row'<'col-sm-12'tr>>" +
+          "<'row mb-5'<'col-sm-7 col-md-7'p><'col-sm-5 col-md-5'i>>" ,
+        'buttons' : [
+            {
+                text: '<span class="fa fa-plus"></span> {% trans 'Add' %}',
+                className: 'btn btn-primary',
+                action: function () {
+                    window.location.replace('{{ model.get_add_url }}');
+                }
+            }
+        ],
+        'language' : {
+            {% if LANGUAGE_CODE == "fr" %}"url": "https://cdn.datatables.net/plug-ins/1.10.19/i18n/French.json"{% endif %}
+            {% if LANGUAGE_CODE == "nl" %}"url": "https://cdn.datatables.net/plug-ins/1.10.19/i18n/Dutch.json"{% endif %}
+            {% if LANGUAGE_CODE == "en" %}"url": "https://cdn.datatables.net/plug-ins/1.10.19/i18n/English.json"{% endif %}
+        },   
       });
-
-    </script>
+  });
+  </script>
     {% if DEBUG %}
       </div>
     {% endif %}

@@ -5,7 +5,8 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.contrib.messages.views import SuccessMessageMixin
 # Create your views here.
-#--------------------------- SEASON -------------------------------
+# --------------------------- SEASON -------------------------------
+
 
 class QuestionCreateView(CreateBreadcrumbMixin, CreateView):
     model = Question
@@ -24,7 +25,7 @@ class QuestionListView(ListBreadcrumbMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['model']= self.model
+        context['model'] = self.model
         return context
 
 
@@ -40,7 +41,7 @@ class QuestionUpdateView(UpdateBreadcrumbMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['model']= self.model
+        context['model'] = self.model
         return context
 
 
@@ -59,7 +60,8 @@ class QuestionDeleteView(SuccessMessageMixin, DeleteView):
     def get_success_url(self):
         return reverse_lazy('assessment:question_list')
 
-#--------------------------- QUESTIONR -------------------------------
+# --------------------------- QUESTIONR -------------------------------
+
 
 class QuestionRCreateView(CreateBreadcrumbMixin, CreateView):
     model = QuestionR
@@ -78,7 +80,7 @@ class QuestionRListView(ListBreadcrumbMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['model']= self.model
+        context['model'] = self.model
         return context
 
 
@@ -94,7 +96,7 @@ class QuestionRUpdateView(UpdateBreadcrumbMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['model']= self.model
+        context['model'] = self.model
         return context
 
 
@@ -113,7 +115,8 @@ class QuestionRDeleteView(SuccessMessageMixin, DeleteView):
     def get_success_url(self):
         return reverse_lazy('assessment:questionr_list')
 
-#--------------------------- ASSESSMENT MATCH---------------------------
+# --------------------------- ASSESSMENT MATCH---------------------------
+
 
 class AssessmentMatchCreateView(CreateBreadcrumbMixin, CreateView):
     model = AssessmentMatch
@@ -131,7 +134,7 @@ class AssessmentMatchListView(ListBreadcrumbMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['model']= self.model
+        context['model'] = self.model
         return context
 
 
@@ -147,7 +150,7 @@ class AssessmentMatchUpdateView(UpdateBreadcrumbMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['model']= self.model
+        context['model'] = self.model
         return context
 
 
@@ -166,7 +169,8 @@ class AssessmentMatchDeleteView(SuccessMessageMixin, DeleteView):
     def get_success_url(self):
         return reverse_lazy('assessment:assessmentmatch_list')
 
-#--------------------------- ASSESSMENT REFEREE--------------------------
+# --------------------------- ASSESSMENT REFEREE--------------------------
+
 
 class AssessmentRefereeCreateView(CreateBreadcrumbMixin, CreateView):
     model = AssessmentReferee
@@ -184,7 +188,7 @@ class AssessmentRefereeListView(ListBreadcrumbMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['model']= self.model
+        context['model'] = self.model
         return context
 
 
@@ -200,7 +204,7 @@ class AssessmentRefereeUpdateView(UpdateBreadcrumbMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['model']= self.model
+        context['model'] = self.model
         return context
 
 
@@ -218,5 +222,3 @@ class AssessmentRefereeDeleteView(SuccessMessageMixin, DeleteView):
 
     def get_success_url(self):
         return reverse_lazy('assessment:assessmentreferee_list')
-
-
