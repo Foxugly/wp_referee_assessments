@@ -151,7 +151,7 @@ class AssessmentMatch(models.Model):
         return reverse('assessment:assessmentmatch_detail', kwargs={'pk': self.pk})
 
     def get_delete_url(self):
-        return reverse('assessment:assessmentmatch_delete', kwargs={'pk': self.pkS})
+        return reverse('assessment:assessmentmatch_delete', kwargs={'pk': self.pk})
 
     def get_list_url(self):
         return reverse('assessment:assessmentmatch_list')
