@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'compat',
     'hijack_admin',
     'bootstrap4',
+    'django_crontab',
     'customuser',
     'championship',
     'assessment',
@@ -155,6 +156,9 @@ if DEBUG:
         'SHOW_TOOLBAR_CALLBACK': 'settings.show_toolbar',
     }
 
+CRONJOBS = [
+    ('*/5 * * * *', 'customuser.cron.send_mail')
+]
 BOOTSTRAP4 = {
 
     # The complete URL to the Bootstrap CSS file
