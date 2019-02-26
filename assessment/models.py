@@ -141,6 +141,7 @@ class AssessmentReferee(models.Model):
 
 
 class AssessmentMatch(models.Model):
+    sent = models.BooleanField(_('Sent by mail'), default=False)
     done = models.BooleanField(_('Done'), default=False)
     team = models.ForeignKey(
         Team, on_delete=models.CASCADE, verbose_name=_('team'))
