@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
+from django.utils.timezone import localtime
 
 
 class Season(models.Model):
@@ -167,7 +168,11 @@ class Match(models.Model):
         return self.referees.all()
 
     def __str__(self):
-        return '[%s] %s : %s - %s' % (self.competition, self.datetime.strftime("%d/%m/%Y %H:%M"), self.teamH, self.teamA)
+        date = localtime(self.datetime).strftime("%d/%m/%Y %H:%M")
+        return '[%s] %s : %s - %s' % (self.competition, date, self.teamH, self.teamA)
+
+    def get_evaluation_url(self):
+        return reverse('evaluation', kwargs={'match_id': self.pk})
 
     def get_absolute_url(self):
         return reverse('championship:match_change', kwargs={'pk': self.pk})

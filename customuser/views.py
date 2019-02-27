@@ -96,10 +96,10 @@ def stats(request):
 
 @login_required
 @user_can_access
-def evaluation(request, am_id):
+def evaluation(request, match_id):
     c = {}
-    c['id'] = am_id
-    am = AssessmentMatch.objects.get(id=am_id)
+    c['id'] = match_id
+    am = AssessmentMatch.objects.get(match__id=match_id)
     if request.method == 'POST':
         d = dict(request.POST)
         for key in d.keys():
@@ -113,9 +113,7 @@ def evaluation(request, am_id):
         eid = int(d['eval_id'][0])
         e = AssessmentReferee.objects.get(
             id=eid, team__in=request.user.get_teams())
-        e.confirm = True
-        e.user = request.user
-        e.datetime_confirm = timezone.now()
+        e.set_confirm(request.user)
         e.save()
         am = AssessmentMatch.objects.get(id=am_id)
         am.check_done()

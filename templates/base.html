@@ -149,11 +149,14 @@
               }
           ],
           'language' : {
-              {% if LANGUAGE_CODE == "fr" %} "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/French.json" {% endif %}
-              {% if LANGUAGE_CODE == "nl" %} "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Dutch.json" {% endif %}
-              {% if LANGUAGE_CODE == "en" %} "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/English.json" {% endif %}
+              {% if LANGUAGE_CODE == "fr" %} "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/French.json" {% endif %}
+              {% if LANGUAGE_CODE == "nl" %} "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Dutch.json" {% endif %}
+              {% if LANGUAGE_CODE == "en" %} "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/English.json" {% endif %}
           },   
       }); // end datatable
+
+
+      $.fn.dataTable.Buttons.defaults.dom.button.className = 'btn';
 
       {% for key, value in add_class_to_fields.items %}
         {% if value == "datetime" %}

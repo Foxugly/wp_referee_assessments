@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load i18n %}
+{% load i18n tz %}
 {% block content %}
 {% if teams %}
 <div class="row mt-3">
@@ -48,25 +48,25 @@
         <div id="all" class="tab-pane fade">
           {% for am in all %}
             {% if am.match.datetime|date:"Y-m-d" <= now|date:"Y-m-d"  %}
-              <p><a href='/evaluation/{{ am.id }}/'> [{{am.match.competition}}] {{ am.match.datetime|date:"d/m/Y" }}  : {{am.match.teamH}} - {{am.match.teamA}}</a></p>
+              <p><a href='/evaluation/{{ am.id }}/'> [{{am.match.competition}}] {{ am.match.datetime|localtime|date:"d/m/Y" }}  : {{am.match.teamH}} - {{am.match.teamA}}</a></p>
             {% else %}
-              <p>[{{am.match.competition}}] {{ am.match.datetime|date:"m/d/Y" }}  : {{am.match.teamH}} - {{am.match.teamA}}</p>
+              <p>[{{am.match.competition}}] {{ am.match.datetime|localtime|date:"m/d/Y" }}  : {{am.match.teamH}} - {{am.match.teamA}}</p>
             {% endif %}
           {% endfor %}
         </div>
         <div id="todo" class="tab-pane active">
           {% for am in todo %}
-            <p><a href='/evaluation/{{ am.id }}/'> [{{am.match.competition}}] {{ am.match.datetime|date:"d/m/Y" }}  : {{am.match.teamH}} - {{am.match.teamA}}</a></p>
+            <p><a href='/evaluation/{{ am.id }}/'> [{{am.match.competition}}] {{ am.match.datetime|localtime|date:"d/m/Y" }}  : {{am.match.teamH}} - {{am.match.teamA}}</a></p>
           {% endfor %}
         </div>
         <div id="done" class="tab-pane fade">
           {% for am in done %}
-            <p><a href='/evaluation/{{ am.id }}/'> [{{am.match.competition}}] {{ am.match.datetime|date:"d/m/Y" }}  : {{am.match.teamH}} - {{am.match.teamA}}</a></p>
+            <p><a href='/evaluation/{{ am.id }}/'> [{{am.match.competition}}] {{ am.match.datetime|localtime|date:"d/m/Y" }}  : {{am.match.teamH}} - {{am.match.teamA}}</a></p>
           {% endfor %}
         </div>
         <div id="next" class="tab-pane fade">
           {% for am in next %}
-            <p>[{{am.match.competition}}] {{ am.match.datetime|date:"d/m/Y" }}  : {{am.match.teamH}} - {{am.match.teamA}}</p>
+            <p>[{{am.match.competition}}] {{ am.match.datetime|localtime|date:"d/m/Y" }}  : {{am.match.teamH}} - {{am.match.teamA}}</p>
           {% endfor %}
         </div>
   </div>

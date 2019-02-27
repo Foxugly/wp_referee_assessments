@@ -1,0 +1,14 @@
+Bonjour {{ user.firstname }},
+
+
+Une évaluation vous est demandée pour le match {{match}}.
+
+Veuillez cliquer sur le lien suivant pour accéder directement à la fiche d'évaluation :
+
+{{match.get_evaluation_url}}
+
+Sportivement,
+
+la Commission Centrale des Arbitres
+Belswim
+

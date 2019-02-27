@@ -40,7 +40,7 @@ def set_language(request):
 urlpatterns = [
     path('', login_required(home), name='home'),
     path('lang/', set_language, name='lang'),
-    path('evaluation/<int:am_id>/', login_required(evaluation), name="evaluation"),
+    path('evaluation/<int:match_id>/', login_required(evaluation), name="evaluation"),
     path('stats/', login_required(stats), name="stats"),
     path('admin/', admin.site.urls),
     path('championship/', include('championship.urls', namespace='championship')),

@@ -15,7 +15,7 @@
   <div class="card">
   <div class="card-header">{{ e.referee }}</div>
     <div class="card-body">
-      <form action="/evaluation/{{am.id}}/" enctype="multipart/form-data" method="post" >
+      <form action="/evaluation/{{am.match.id}}/" enctype="multipart/form-data" method="post" >
         {% csrf_token %}
         <input type=hidden name="eval_id" value="{{e.id}}" />
         {% for q in e.questionnaire.all %}

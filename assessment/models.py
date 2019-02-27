@@ -3,6 +3,7 @@ from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
 from championship.models import Match, Referee, Team, Category
 from customuser.models import CustomUser
+from django.utils import timezone
 
 
 # Create your models here.
@@ -110,6 +111,11 @@ class AssessmentReferee(models.Model):
                 question=q, priority=q.priority, answer=q.default_value)
             qr.save()
             self.questionnaire.add(qr)
+
+    def set_confirm(self, customuser):
+        self.confirm = True
+        self.user = customuser
+        self.datetime_confirm = timezone.now()
 
     def get_sorted_questions(self):
         return self.questionnaire.all().order_by('priority')
