@@ -99,7 +99,7 @@ def stats(request):
 def evaluation(request, match_id):
     c = {}
     c['id'] = match_id
-    am = AssessmentMatch.objects.get(match__id=match_id)
+    am = AssessmentMatch.objects.get(match__id=match_id, team__in=request.user.get_teams())
     if request.method == 'POST':
         d = dict(request.POST)
         for key in d.keys():
